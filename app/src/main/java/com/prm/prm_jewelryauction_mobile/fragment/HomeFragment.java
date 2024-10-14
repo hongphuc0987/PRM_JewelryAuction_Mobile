@@ -43,7 +43,7 @@ public class HomeFragment extends Fragment {
         cardItemList = new ArrayList<>();
         loadCardItems();
 
-        cardAdapter = new CardAdapter(cardItemList);
+        cardAdapter = new CardAdapter(requireActivity(), cardItemList);
         recyclerView.setAdapter(cardAdapter);
 
         return view;

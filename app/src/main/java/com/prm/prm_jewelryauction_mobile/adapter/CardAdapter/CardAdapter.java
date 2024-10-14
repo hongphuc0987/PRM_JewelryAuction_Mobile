@@ -1,4 +1,6 @@
 package com.prm.prm_jewelryauction_mobile.adapter.CardAdapter;
+
+import android.content.Context; // Import Context
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,18 +10,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.prm.prm_jewelryauction_mobile.MainActivity;
 import com.prm.prm_jewelryauction_mobile.R;
+import com.prm.prm_jewelryauction_mobile.fragment.AuctionDetailFragment;
 import com.prm.prm_jewelryauction_mobile.model.CardItem;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder> {
     private final List<CardItem> cardItemList;
+    private final Context context; // Thêm context
 
-    public CardAdapter(List<CardItem> cardItemList) {
+    public CardAdapter(Context context, List<CardItem> cardItemList) {
+        this.context = context; // Gán context
         this.cardItemList = cardItemList;
     }
 
@@ -37,6 +41,17 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
         holder.cardTitle.setText(currentItem.getTitle());
         holder.cardPrice.setText(currentItem.getPrice());
         holder.cardCountdown.setText(getCountdown(currentItem.getEndDate()));
+
+        holder.itemView.setOnClickListener(v -> {
+            AuctionDetailFragment detailFragment = AuctionDetailFragment.newInstance(currentItem.getImageResource(), currentItem.getTitle(), currentItem.getPrice());
+
+            // Thay thế Fragment và giữ lại Bottom Navigation
+            ((MainActivity) context).getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, detailFragment)
+                    .addToBackStack(null) // Thêm vào back stack
+                    .commit();
+        });
     }
 
     private String getCountdown(long endDateMillis) {
@@ -74,4 +89,3 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
         }
     }
 }
-
