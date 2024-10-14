@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">PRM_JewelryAuction_Mobile</string>
+    <string name="app_name">Jewelry Auction Mobile</string>
+    <string name="card_image">Card Image</string> <!-- Thêm dòng này -->
+    <!-- Thêm các chuỗi khác nếu cần -->
 </resources>

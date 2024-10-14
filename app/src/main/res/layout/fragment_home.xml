@@ -6,9 +6,8 @@
     android:gravity="center"
     android:id="@+id/fragment_home">
 
-    <TextView
-        android:text="Home Screen"
-        android:textSize="24sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>
