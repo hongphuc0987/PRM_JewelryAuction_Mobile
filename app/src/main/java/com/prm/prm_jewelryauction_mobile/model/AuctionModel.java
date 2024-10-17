@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class AuctionModel extends BaseModel{
 
-    private int id;
+    private long id;
     private JewelryModel jewelry;
     private String startTime;
     private String endTime;
@@ -14,7 +14,7 @@ public class AuctionModel extends BaseModel{
     private UserModel winner;
     private String status;
 
-    public AuctionModel(String createdAt, String updatedAt, int id, JewelryModel jewelry, String startTime, String endTime, int step, int totalBids, String currentPrice, UserModel winner, String status) {
+    public AuctionModel(String createdAt, String updatedAt, long id, JewelryModel jewelry, String startTime, String endTime, int step, int totalBids, String currentPrice, UserModel winner, String status) {
         super(createdAt, updatedAt);
         this.id = id;
         this.jewelry = jewelry;
@@ -67,7 +67,7 @@ public class AuctionModel extends BaseModel{
 
 
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

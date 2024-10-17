@@ -5,7 +5,7 @@ public class CardItem {
     private final int imageResource;
     private final String title;
     private final String price;
-    private final long endDate; // Use long for storing time in milliseconds
+    private final long endDate;
 
     public CardItem(int imageResource, String title, String price, long endDate) {
         this.imageResource = imageResource;

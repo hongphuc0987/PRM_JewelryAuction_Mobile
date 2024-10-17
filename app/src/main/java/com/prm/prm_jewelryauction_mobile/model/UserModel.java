@@ -2,7 +2,7 @@ package com.prm.prm_jewelryauction_mobile.model;
 
 public class UserModel {
     private int id;
-    private String fullName;
+    private String full_name;
     private String phoneNumber;
     private String email;
     private String address;
@@ -12,9 +12,9 @@ public class UserModel {
     private boolean emailVerified;
     private boolean isActive;
 
-    public UserModel(int id, String fullName, String phoneNumber, String email, String address, String imageUrl, String dateOfBirth, RoleModel roleId, boolean emailVerified, boolean isActive) {
+    public UserModel(int id, String full_name, String phoneNumber, String email, String address, String imageUrl, String dateOfBirth, RoleModel roleId, boolean emailVerified, boolean isActive) {
         this.id = id;
-        this.fullName = fullName;
+        this.full_name = full_name;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.address = address;
@@ -30,7 +30,7 @@ public class UserModel {
     }
 
     public String getFullName() {
-        return fullName;
+        return full_name;
     }
 
     public String getPhoneNumber() {

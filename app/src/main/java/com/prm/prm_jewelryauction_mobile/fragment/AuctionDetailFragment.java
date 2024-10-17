@@ -35,12 +35,10 @@ public class AuctionDetailFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.auction_detail_fragment, container, false);
 
-        // Nhận dữ liệu từ arguments
         int imageResId = getArguments().getInt(ARG_IMAGE_RES_ID);
         String title = getArguments().getString(ARG_TITLE);
         String price = getArguments().getString(ARG_PRICE);
 
-        // Ánh xạ các View
         ImageView imageView = view.findViewById(R.id.detail_image);
         TextView titleTextView = view.findViewById(R.id.detail_title);
         TextView priceTextView = view.findViewById(R.id.detail_price);
@@ -51,14 +49,11 @@ public class AuctionDetailFragment extends Fragment {
             requireActivity().getSupportFragmentManager().popBackStack();
         });
 
-        // Thiết lập dữ liệu vào các View
         imageView.setImageResource(imageResId);
         titleTextView.setText(title);
         priceTextView.setText(price);
 
-        // Thiết lập sự kiện cho nút Bidding
         biddingButton.setOnClickListener(v -> {
-            // Thực hiện hành động bidding ở đây
         });
 
         return view;

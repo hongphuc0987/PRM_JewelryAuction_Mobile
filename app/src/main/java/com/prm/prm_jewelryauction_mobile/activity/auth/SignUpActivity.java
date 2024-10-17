@@ -1,4 +1,4 @@
-package com.prm.prm_jewelryauction_mobile.activity;
+package com.prm.prm_jewelryauction_mobile.activity.auth;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.prm.prm_jewelryauction_mobile.R;
 import com.prm.prm_jewelryauction_mobile.config.RetrofitClient;
-import com.prm.prm_jewelryauction_mobile.data.UserSignUpRequest;
-import com.prm.prm_jewelryauction_mobile.service.ApiService;
+import com.prm.prm_jewelryauction_mobile.data.request.UserSignUpRequest;
+import com.prm.prm_jewelryauction_mobile.service.ApiAuthService;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -64,7 +64,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void callSignUpApi(UserSignUpRequest request) {
-        ApiService apiService = RetrofitClient.getRetrofitInstance().create(ApiService.class);
+        ApiAuthService apiService = RetrofitClient.getRetrofitInstance().create(ApiAuthService.class);
         Call<Void> call = apiService.signupUser(request);
 
         call.enqueue(new Callback<Void>() {
