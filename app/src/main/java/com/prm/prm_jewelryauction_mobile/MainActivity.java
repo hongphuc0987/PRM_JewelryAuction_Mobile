@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
                 selectedFragment = new ProfileFragment(); // Chỉ cần nếu bạn có ProfileFragment
             }
 
-            // Thay thế Fragment
             if (selectedFragment != null) {
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, selectedFragment)

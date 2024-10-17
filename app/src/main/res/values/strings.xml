@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Jewelry Auction</string>
     <string name="card_image">Card Image</string>
-    <string name="detail_image">Detail Image</string> <!-- Thêm dòng này -->
+    <string name="detail_image">Detail Image</string>
     <!-- Thêm các chuỗi khác nếu cần -->
+
+    <string name="auction_thumbnail">Auction Thumbnail</string>
 </resources>
