@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.prm.prm_jewelryauction_mobile.R;
-import com.prm.prm_jewelryauction_mobile.activity.auth.LoginActivity;
 
 public class ProfileFragment extends Fragment {
 
