@@ -4,11 +4,23 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:id="@+id/fragment_profile">
+    android:padding="16dp"
+    android:background="#f5f5f5">
 
+    <!-- Tiêu đề -->
     <TextView
+        android:id="@+id/tvProfileTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Profile"
         android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="32dp" />
+
+    <!-- Nút Đăng Nhập -->
+    <Button
+        android:id="@+id/btnLogin"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="Login" />
 </LinearLayout>

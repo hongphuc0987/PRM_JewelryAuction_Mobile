@@ -23,9 +23,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activity.auction.AuctionDetailActivity"
             android:exported="true" />
+
+        <activity android:name=".activity.auth.LoginActivity" />
+
 
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
