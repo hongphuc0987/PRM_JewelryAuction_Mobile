@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.prm.prm_jewelryauction_mobile.R;
 import com.prm.prm_jewelryauction_mobile.config.RetrofitClient;
-import com.prm.prm_jewelryauction_mobile.data.request.UserSignUpRequest;
+import com.prm.prm_jewelryauction_mobile.data.request.auth.UserSignUpRequest;
 import com.prm.prm_jewelryauction_mobile.service.ApiAuthService;
 
 import java.util.Calendar;

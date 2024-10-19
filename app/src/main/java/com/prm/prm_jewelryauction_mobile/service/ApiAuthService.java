@@ -1,7 +1,7 @@
 package com.prm.prm_jewelryauction_mobile.service;
 
-import com.prm.prm_jewelryauction_mobile.data.request.UserSignInRequest;
-import com.prm.prm_jewelryauction_mobile.data.request.UserSignUpRequest;
+import com.prm.prm_jewelryauction_mobile.data.request.auth.UserSignInRequest;
+import com.prm.prm_jewelryauction_mobile.data.request.auth.UserSignUpRequest;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;

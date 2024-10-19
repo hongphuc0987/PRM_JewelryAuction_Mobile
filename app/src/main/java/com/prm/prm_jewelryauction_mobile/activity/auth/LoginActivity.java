@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.prm.prm_jewelryauction_mobile.MainActivity;
 import com.prm.prm_jewelryauction_mobile.R;
-import com.prm.prm_jewelryauction_mobile.data.request.UserSignInRequest;
+import com.prm.prm_jewelryauction_mobile.data.request.auth.UserSignInRequest;
 import com.prm.prm_jewelryauction_mobile.config.RetrofitClient;
 import com.prm.prm_jewelryauction_mobile.service.ApiAuthService;
 
