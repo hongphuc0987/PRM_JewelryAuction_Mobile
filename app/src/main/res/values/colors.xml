@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="background_color">#F5F5F5</color> <!-- Màu nền -->
+    <color name="colorPrimary">#6200EE</color> <!-- Màu chính -->
+    <color name="colorPrimaryDark">#3700B3</color> <!-- Màu chính tối -->
+    <color name="colorAccent">#FF4081</color> <!-- Màu nhấn -->
+    <color name="black">#000000</color> <!-- Màu đen -->
+
 </resources>
