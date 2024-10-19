@@ -25,4 +25,21 @@ public class MaterialModel extends BaseModel{
     public String getUnit() {
         return unit;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
