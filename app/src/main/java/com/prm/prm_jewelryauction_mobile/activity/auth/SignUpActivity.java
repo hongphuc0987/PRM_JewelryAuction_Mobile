@@ -1,5 +1,6 @@
 package com.prm.prm_jewelryauction_mobile.activity.auth;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -13,6 +14,8 @@ import com.prm.prm_jewelryauction_mobile.config.RetrofitClient;
 import com.prm.prm_jewelryauction_mobile.data.request.UserSignUpRequest;
 import com.prm.prm_jewelryauction_mobile.service.ApiAuthService;
 
+import java.util.Calendar;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,12 +24,14 @@ public class SignUpActivity extends AppCompatActivity {
 
     private EditText etFullName, etEmail, etPhone, etAddress, etDob, etPassword, etConfirmPassword;
     private Button btnSignUp;
+    private int year, month, day;  // Các biến lưu trữ ngày tháng
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        // Ánh xạ các thành phần
         etFullName = findViewById(R.id.etFullName);
         etEmail = findViewById(R.id.etEmail);
         etPhone = findViewById(R.id.etPhone);
@@ -36,6 +41,24 @@ public class SignUpActivity extends AppCompatActivity {
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
         btnSignUp = findViewById(R.id.btnSignUp);
 
+        // Lấy ngày hiện tại
+        Calendar calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        // Sự kiện nhấn vào trường DOB để mở DatePickerDialog
+        etDob.setOnClickListener(v -> {
+            DatePickerDialog datePickerDialog = new DatePickerDialog(SignUpActivity.this,
+                    (view, selectedYear, selectedMonth, selectedDay) -> {
+                        selectedMonth += 1; // Tháng bắt đầu từ 0
+                        String dob = selectedDay + "/" + selectedMonth + "/" + selectedYear;
+                        etDob.setText(dob);
+                    }, year, month, day);
+            datePickerDialog.show();
+        });
+
+        // Sự kiện nhấn vào nút đăng ký
         btnSignUp.setOnClickListener(v -> {
             String fullName = etFullName.getText().toString().trim();
             String email = etEmail.getText().toString().trim();
@@ -63,6 +86,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
+    // Gọi API đăng ký
     private void callSignUpApi(UserSignUpRequest request) {
         ApiAuthService apiService = RetrofitClient.getRetrofitInstance().create(ApiAuthService.class);
         Call<Void> call = apiService.signupUser(request);
