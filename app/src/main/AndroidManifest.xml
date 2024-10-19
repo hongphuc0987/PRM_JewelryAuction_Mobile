@@ -30,6 +30,8 @@
 
         <activity android:name=".activity.auth.LoginActivity" />
 
+        <activity android:name=".activity.auth.SignUpActivity" />
+
 
     </application>
     <uses-permission android:name="android.permission.INTERNET" />

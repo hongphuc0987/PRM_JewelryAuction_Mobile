@@ -1,6 +1,8 @@
 package com.prm.prm_jewelryauction_mobile.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -18,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.prm.prm_jewelryauction_mobile.R;
+import com.prm.prm_jewelryauction_mobile.activity.auth.LoginActivity;
 
 public class ProfileFragment extends Fragment {
     @Nullable
@@ -78,8 +81,14 @@ public class ProfileFragment extends Fragment {
         transaction.commit();
     }
     private void logout() {
-        Toast.makeText(getContext(), "Logging out...", Toast.LENGTH_SHORT).show();
-        // Add logout logic here (e.g., clear session, navigate to login screen)
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+
+        Intent intent = new Intent(requireActivity(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private void addJewelry() {
