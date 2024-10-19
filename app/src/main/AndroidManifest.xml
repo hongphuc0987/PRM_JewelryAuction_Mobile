@@ -32,6 +32,9 @@
 
         <activity android:name=".activity.auth.SignUpActivity" />
 
+        <activity android:name=".activity.auction.BiddingActivity" />
+
+
 
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
