@@ -1,6 +1,211 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:padding="16dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Jewelry Name -->
+        <EditText
+            android:id="@+id/etJewelryName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Jewelry Name"
+            android:layout_marginBottom="10dp"
+            android:padding="12dp"/>
+
+        <!-- Description -->
+        <EditText
+            android:id="@+id/etJewelryDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Description"
+            android:layout_below="@id/etJewelryName"
+            android:layout_marginBottom="10dp"
+            android:padding="12dp"/>
+
+        <!-- Upload Image Section -->
+        <TextView
+            android:id="@+id/txtUploadImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upload Image"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_below="@id/etJewelryDescription"
+            android:layout_marginTop="10dp"/>
+
+        <ImageView
+            android:id="@+id/imgPreview"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@id/txtUploadImage"
+            android:layout_marginTop="10dp"
+            android:scaleType="centerCrop"
+            android:background="@android:color/darker_gray"
+            android:contentDescription="Image Preview"/>
+
+        <Button
+            android:id="@+id/btnUploadImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose Image"
+            android:layout_below="@id/imgPreview"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="20dp"/>
+
+        <!-- Category Spinner -->
+        <TextView
+            android:id="@+id/txtCtg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Category"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_below="@id/btnUploadImage"/>
+
+        <Spinner
+            android:id="@+id/spinnerCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtCtg"
+            android:layout_marginBottom="10dp"
+            android:padding="12dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:minHeight="48dp"
+            android:gravity="center_vertical"/>
+
+        <!-- Collection Spinner -->
+        <TextView
+            android:id="@+id/txtCollection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Collection"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_below="@id/spinnerCategory"/>
+
+        <Spinner
+            android:id="@+id/spinnerCollection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtCollection"
+            android:layout_marginBottom="10dp"
+            android:padding="12dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:minHeight="48dp"
+            android:gravity="center_vertical"/>
+
+        <!-- Brand Spinner -->
+        <TextView
+            android:id="@+id/txtBrand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Brand"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_below="@id/spinnerCollection"/>
+
+        <Spinner
+            android:id="@+id/spinnerBrand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtBrand"
+            android:layout_marginBottom="10dp"
+            android:padding="12dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:minHeight="48dp"
+            android:gravity="center_vertical"/>
+
+        <!-- Condition Spinner -->
+        <TextView
+            android:id="@+id/txtCondition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Condition"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_below="@id/spinnerBrand"/>
+
+        <Spinner
+            android:id="@+id/spinnerCondition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtCondition"
+            android:layout_marginBottom="10dp"
+            android:padding="12dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:minHeight="48dp"
+            android:gravity="center_vertical"/>
+
+        <!-- Size Input -->
+        <EditText
+            android:id="@+id/etSize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Size"
+            android:layout_below="@id/spinnerCondition"
+            android:layout_marginBottom="10dp"/>
+
+        <!-- Sex Spinner -->
+        <TextView
+            android:id="@+id/txtSex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sex"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_below="@id/etSize"/>
+
+        <Spinner
+            android:id="@+id/rgSex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtSex"
+            android:layout_marginBottom="10dp"
+            android:padding="12dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:minHeight="48dp"
+            android:gravity="center_vertical"/>
+
+        <!-- Materials Section -->
+        <TextView
+            android:id="@+id/txtMaterial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Materials"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_below="@id/rgSex"/>
+
+        <ImageView
+            android:id="@+id/btnAddMaterial"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="0dp"
+            android:contentDescription="Add Material"
+            android:layout_below="@id/txtMaterial"
+            android:src="@android:drawable/ic_input_add"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvMaterials"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnAddMaterial"
+            android:layout_marginBottom="10dp"/>
+
+        <!-- Submit Button -->
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:layout_below="@id/rvMaterials"
+            android:layout_marginTop="20dp"/>
+    </RelativeLayout>
+</ScrollView>
