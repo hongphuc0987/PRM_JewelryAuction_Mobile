@@ -10,9 +10,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.prm.prm_jewelryauction_mobile.R;
 import com.prm.prm_jewelryauction_mobile.config.RetrofitClient;
+import com.prm.prm_jewelryauction_mobile.data.request.auction.BiddingRequest;
 import com.prm.prm_jewelryauction_mobile.model.AuctionModel;
 import com.prm.prm_jewelryauction_mobile.service.ApiAuctionService;
 
+import org.json.JSONObject;
+
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,7 +28,8 @@ public class BiddingActivity extends AppCompatActivity {
 
     private double step = 5000.0;
     private double currentPrice;
-    private double bidAmount;
+    private float bidAmount;
+    private long auctionId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,7 +44,7 @@ public class BiddingActivity extends AppCompatActivity {
         btnSubtract = findViewById(R.id.btnSubtract);
         btnBid = findViewById(R.id.btnBid);
 
-        long auctionId = getIntent().getLongExtra("AUCTION_ID", -1);
+        auctionId = getIntent().getLongExtra("AUCTION_ID", -1);
         if (auctionId != -1) {
             loadAuctionDetails(auctionId);
         } else {
@@ -61,12 +66,11 @@ public class BiddingActivity extends AppCompatActivity {
             }
         });
 
-        btnBid.setOnClickListener(v -> {
-            Toast.makeText(this, "Bid placed: " + bidAmount + " VND", Toast.LENGTH_SHORT).show();});
+        btnBid.setOnClickListener(v -> placeBid());
     }
 
     private void loadAuctionDetails(long auctionId) {
-        ApiAuctionService apiService = RetrofitClient.getRetrofitInstance().create(ApiAuctionService.class);
+        ApiAuctionService apiService = RetrofitClient.getRetrofitInstanceWithToken(this).create(ApiAuctionService.class);
         Call<AuctionModel> call = apiService.getAuction(auctionId);
 
         call.enqueue(new Callback<AuctionModel>() {
@@ -75,7 +79,7 @@ public class BiddingActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     AuctionModel auction = response.body();
                     currentPrice = Double.parseDouble(auction.getCurrentPrice());
-                    bidAmount = currentPrice + step;
+                    bidAmount = (float) (currentPrice + step);
 
                     tvCurrentPrice.setText("Current Price: " + currentPrice + " VND");
                     tvStepAuction.setText("Step: " + step + " VND");
@@ -98,4 +102,39 @@ public class BiddingActivity extends AppCompatActivity {
     private void updateBidAmount() {
         tvBidAmount.setText("Bidding price: " + bidAmount + " VND");
     }
+
+    private void placeBid() {
+        BiddingRequest request = new BiddingRequest(auctionId, bidAmount);
+
+        ApiAuctionService apiService = RetrofitClient.getRetrofitInstanceWithToken(this).create(ApiAuctionService.class);
+        Call<ResponseBody> call = apiService.bidding(request);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(BiddingActivity.this, "Bid placed successfully!", Toast.LENGTH_SHORT).show();
+                } else {
+                    try {
+                        // Lấy nội dung lỗi từ body response và hiển thị
+                        String errorBody = response.errorBody().string();
+                        JSONObject jsonObject = new JSONObject(errorBody);
+                        String message = jsonObject.optString("message", "Unknown error");
+
+                        Toast.makeText(BiddingActivity.this, "Error: " + message, Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        Toast.makeText(BiddingActivity.this, "Failed to parse error response", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(BiddingActivity.this, "Error placing bid", Toast.LENGTH_SHORT).show();
+                t.printStackTrace();
+            }
+        });
+    }
+
 }
