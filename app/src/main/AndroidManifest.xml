@@ -29,15 +29,30 @@
             android:exported="true" />
 
         <activity android:name=".activity.auth.LoginActivity" />
-
+        <activity
+            android:name=".activity.payment.PaymentActivity"
+            android:exported="true"
+            />
+        <activity
+            android:label="Merchant Demo"
+            android:launchMode="singleTask"
+            android:name=".activity.payment.PaymentConfirm"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="demozpdk" android:host="app" />
+            </intent-filter>
+        </activity>
+        <activity
+        android:name=".activity.payment.PaymentNotification"
+        android:exported="true"/>
         <activity android:name=".activity.auth.SignUpActivity" />
 
         <activity android:name=".activity.auction.BiddingActivity" />
-
-
-
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 </manifest>
