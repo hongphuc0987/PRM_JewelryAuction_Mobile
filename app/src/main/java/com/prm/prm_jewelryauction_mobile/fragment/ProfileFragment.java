@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.prm.prm_jewelryauction_mobile.R;
+import com.prm.prm_jewelryauction_mobile.activity.payment.PaymentActivity;
 
 public class ProfileFragment extends Fragment {
     @Nullable
@@ -29,6 +31,16 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         // Find the icon container where icons will be dynamically added
         LinearLayout iconContainer = view.findViewById(R.id.icon_container);
+        TextView walletBalance = view.findViewById(R.id.wallet_balance);
+        Button btnDeposit = view.findViewById(R.id.button_deposit);
+        walletBalance.setText("20000000");
+        btnDeposit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), PaymentActivity.class);
+                startActivity(intent);
+            }
+        });
         // Add icons with names dynamically
         addIconWithName(iconContainer, R.drawable.ic_account, "Profile", () -> navigateToFragment(new HomeFragment()));
         addIconWithName(iconContainer, R.drawable.ic_management, "Product", () -> navigateToFragment(new HomeFragment()));
