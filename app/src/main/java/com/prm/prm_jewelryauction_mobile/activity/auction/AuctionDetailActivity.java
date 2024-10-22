@@ -60,15 +60,13 @@ public class AuctionDetailActivity extends AppCompatActivity {
             loadAuctionDetails(auctionId);
         }
 
-        // Sự kiện nút quay lại
         btnBack.setOnClickListener(v -> onBackPressed());
 
-        // Sự kiện nút đấu giá
-//        btnAuction.setOnClickListener(v -> {
-//            Intent intent = new Intent(AuctionDetailActivity.this, AuctionBidActivity.class);
-//            intent.putExtra("AUCTION_ID", auctionId);
-//            startActivity(intent);
-//        });
+        btnAuction.setOnClickListener(v -> {
+            Intent intent = new Intent(AuctionDetailActivity.this, BiddingActivity.class);
+            intent.putExtra("AUCTION_ID", auctionId);
+            startActivity(intent);
+        });
     }
 
     private void loadAuctionDetails(long auctionId) {
