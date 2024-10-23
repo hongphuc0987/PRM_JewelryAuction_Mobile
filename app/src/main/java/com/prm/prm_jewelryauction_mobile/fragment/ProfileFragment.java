@@ -57,12 +57,11 @@ public class ProfileFragment extends Fragment {
             Intent intent = new Intent(getActivity(), ProductManagementActivity.class);
             startActivity(intent);
         });
-        addIconWithName(iconContainer, R.drawable.ic_add, "Add Product",
-                () -> navigateToFragment(new AddJewelryFragment()));
         addIconWithName(iconContainer, R.drawable.ic_order, "Order", () -> {
             Intent intent = new Intent(getActivity(), WinAuctionListActivity.class);
             startActivity(intent);
-        });        addIconWithName(iconContainer, R.drawable.ic_add, "Add Product", () -> navigateToFragment(new AddJewelryFragment()));
+        });
+        addIconWithName(iconContainer, R.drawable.ic_add, "Add Product", () -> navigateToFragment(new AddJewelryFragment()));
         addIconWithName(iconContainer, R.drawable.ic_logout, "Logout", this::logout);
 
         return view;
