@@ -69,11 +69,11 @@ public class OrderDetailsActivity extends AppCompatActivity {
         // Set back button click listener
         backButton.setOnClickListener(v -> finish());  // Finish the current activity and go back to the previous one
 
-        buttonCheckout.setOnClickListener(v -> {
-            // Start CheckoutActivity (create this activity if it doesn't exist)
-            Intent intent = new Intent(OrderDetailsActivity.this, CheckoutActivity.class);
-            // Optionally pass data needed for checkout
-            startActivity(intent);
-        });
+//        buttonCheckout.setOnClickListener(v -> {
+//            // Start CheckoutActivity (create this activity if it doesn't exist)
+//            Intent intent = new Intent(OrderDetailsActivity.this, CheckoutActivity.class);
+//            // Optionally pass data needed for checkout
+//            startActivity(intent);
+//        });
     }
 }
