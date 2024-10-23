@@ -51,6 +51,9 @@
         <activity android:name=".activity.auth.SignUpActivity" />
 
         <activity android:name=".activity.auction.BiddingActivity" />
+        <activity android:name=".activity.auction.WinAuctionListActivity" />
+        <activity android:name=".activity.OrderDetailsActivity"/>
+
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />

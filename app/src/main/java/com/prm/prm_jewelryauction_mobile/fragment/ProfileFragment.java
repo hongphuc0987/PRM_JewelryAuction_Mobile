@@ -19,7 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
+import com.prm.prm_jewelryauction_mobile.activity.auction.WinAuctionListActivity;  // Import your Order List activity
 import com.prm.prm_jewelryauction_mobile.R;
 import com.prm.prm_jewelryauction_mobile.activity.payment.PaymentActivity;
 import com.prm.prm_jewelryauction_mobile.activity.auth.LoginActivity;
@@ -47,8 +47,10 @@ public class ProfileFragment extends Fragment {
         // Add icons with names dynamically
         addIconWithName(iconContainer, R.drawable.ic_account, "Profile", () -> navigateToFragment(new HomeFragment()));
         addIconWithName(iconContainer, R.drawable.ic_management, "Product", () -> navigateToFragment(new HomeFragment()));
-        addIconWithName(iconContainer, R.drawable.ic_order, "Order", () -> navigateToFragment(new HomeFragment()));
-        addIconWithName(iconContainer, R.drawable.ic_add, "Add Product", () -> navigateToFragment(new AddJewelryFragment()));
+        addIconWithName(iconContainer, R.drawable.ic_order, "Order", () -> {
+            Intent intent = new Intent(getActivity(), WinAuctionListActivity.class);
+            startActivity(intent);
+        });        addIconWithName(iconContainer, R.drawable.ic_add, "Add Product", () -> navigateToFragment(new AddJewelryFragment()));
         addIconWithName(iconContainer, R.drawable.ic_logout, "Logout", this::logout);
         return view;
     }

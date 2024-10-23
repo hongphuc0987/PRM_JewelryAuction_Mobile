@@ -66,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                System.out.println();
                 if (response.isSuccessful() && response.body() != null) {
                     try {
                         String responseBody = response.body().string();
