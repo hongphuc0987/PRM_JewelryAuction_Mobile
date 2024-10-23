@@ -6,7 +6,7 @@ public class ApiResponseWinAuction {
     private int code;
     private String message;
     private long timestamp;
-    private List<AuctionItem> data;
+    private List<AuctionModel> data;
 
     // Getters
     public int getCode() {
@@ -21,7 +21,7 @@ public class ApiResponseWinAuction {
         return timestamp;
     }
 
-    public List<AuctionItem> getData() {
+    public List<AuctionModel> getData() {
         return data;
     }
 }

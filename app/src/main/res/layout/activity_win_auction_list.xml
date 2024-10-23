@@ -18,7 +18,7 @@
         android:id="@+id/headerTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Your Auctions"
+        android:text="Your Auctions Winner"
         android:textSize="20sp"
         android:textStyle="bold"
         android:gravity="center"
