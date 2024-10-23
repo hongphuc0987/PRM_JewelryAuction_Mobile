@@ -1,4 +1,4 @@
-package com.prm.prm_jewelryauction_mobile.activity;
+package com.prm.prm_jewelryauction_mobile.activity.product_management;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

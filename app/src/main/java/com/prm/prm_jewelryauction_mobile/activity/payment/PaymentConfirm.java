@@ -63,6 +63,7 @@ public class PaymentConfirm extends AppCompatActivity {
                                 runOnUiThread(() -> {
                                     Intent intent1 = new Intent(PaymentConfirm.this, PaymentNotification.class);
                                     intent1.putExtra("result", "Payment Successfully");
+                                    intent1.putExtra("amount", amount);  // Pass the amount to the notification
                                     startActivity(intent1);
                                 });
                             }

@@ -1,10 +1,12 @@
-package com.prm.prm_jewelryauction_mobile.activity;
+package com.prm.prm_jewelryauction_mobile.activity.product_management;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.prm.prm_jewelryauction_mobile.R;
+import com.prm.prm_jewelryauction_mobile.fragment.ProductFragment;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 
