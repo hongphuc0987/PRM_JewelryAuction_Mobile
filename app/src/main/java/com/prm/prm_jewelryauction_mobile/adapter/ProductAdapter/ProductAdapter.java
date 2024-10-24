@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.prm.prm_jewelryauction_mobile.R;
+import com.prm.prm_jewelryauction_mobile.activity.auction.AuctionDetailActivity;
 import com.prm.prm_jewelryauction_mobile.activity.product_management.DetailActivity;
 import com.prm.prm_jewelryauction_mobile.model.JewelryModel;
 import com.prm.prm_jewelryauction_mobile.model.Product;
@@ -41,13 +42,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         JewelryModel product = productList.get(position);
         holder.productName.setText(product.getName());
         holder.productImage.setImageResource(R.drawable.ic_complete); // Set image resource
-        holder.productPrice.setText("Starting Price: " + product.getStaringPrice());
+        holder.productPrice.setText("Starting Price: " + product.getStaringPrice() + " VND");
+        holder.productStatus.setText("Status: " + product.getStatus());
 //        holder.productStatus.setText(product.getStatus());
-
+        System.out.println(product.getId());
         // Thiết lập sự kiện nhấn vào item sản phẩm
         holder.itemView.setOnClickListener(v -> {
+            System.out.println(product.getId());
             Intent intent = new Intent(context, DetailActivity.class);
-            intent.putExtra("PRODUCT_NAME", product.getName()); // Chuyển thông tin sản phẩm
+            intent.putExtra("JEWELRY_ID",  product.getId());
             context.startActivity(intent);
         });
     }
@@ -67,7 +70,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             productImage = itemView.findViewById(R.id.product_image);
             productName = itemView.findViewById(R.id.product_name);
             productPrice = itemView.findViewById(R.id.startingProductMe);
-            productPrice = itemView.findViewById(R.id.status);
+            productStatus = itemView.findViewById(R.id.status);
         }
     }
 }
