@@ -22,12 +22,21 @@
         android:padding="12dp"
         android:layout_height="wrap_content"
         android:hint="Enter Weight" />
+
     <TextView
         android:id="@+id/tvUnit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.3"
         android:text="Unit"
-        android:textSize="16sp"
-        />
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/ivDeleteRow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="8dp"
+        android:src="@android:drawable/ic_delete"
+        android:contentDescription="Delete Row" />
 </LinearLayout>

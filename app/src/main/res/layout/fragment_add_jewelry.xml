@@ -143,6 +143,7 @@
             android:minHeight="48dp"
             android:gravity="center_vertical"/>
 
+
         <!-- Size Input -->
         <EditText
             android:id="@+id/etSize"
@@ -151,6 +152,8 @@
             android:hint="Enter Size"
             android:layout_below="@id/spinnerCondition"
             android:layout_marginBottom="10dp"/>
+
+
 
         <!-- Sex Spinner -->
         <TextView
