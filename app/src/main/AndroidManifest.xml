@@ -54,6 +54,7 @@
         <activity android:name=".activity.auction.BiddingActivity" />
         <activity android:name=".activity.auction.WinAuctionListActivity" />
         <activity android:name=".activity.OrderDetailsActivity"/>
+        <activity android:name=".activity.checkout.CheckoutActivity"/>
 
     </application>
     <uses-permission android:name="android.permission.INTERNET" />

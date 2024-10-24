@@ -1,6 +1,7 @@
 package com.prm.prm_jewelryauction_mobile.service;
 
 import com.prm.prm_jewelryauction_mobile.model.ApiResponseWinAuction;
+import com.prm.prm_jewelryauction_mobile.model.CheckoutRequest;
 
 import java.util.List;
 
@@ -14,4 +15,8 @@ import retrofit2.http.Path;
 public interface ApiOrderService {
     @GET("api/v1/auction/win")
     Call<ApiResponseWinAuction> getOrderList();
+
+    @POST("/api/v1/checkout")
+    Call<ApiResponseWinAuction> checkout(@Body CheckoutRequest request); // Define the checkout method
+
 }

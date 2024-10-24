@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.prm.prm_jewelryauction_mobile.R;
+import com.prm.prm_jewelryauction_mobile.activity.checkout.CheckoutActivity;
 import com.squareup.picasso.Picasso;
 
 public class OrderDetailsActivity extends AppCompatActivity {
@@ -33,6 +34,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         Button buttonCheckout = findViewById(R.id.checkoutButton);
 
         // Get data from Intent
+        Long auctionId = getIntent().getLongExtra("auctionId", -1);
         String jewelryNameValue = getIntent().getStringExtra("jewelryName");
         String currentPrice = getIntent().getStringExtra("currentPrice");
         String endTime = getIntent().getStringExtra("endTime");
@@ -69,11 +71,15 @@ public class OrderDetailsActivity extends AppCompatActivity {
         // Set back button click listener
         backButton.setOnClickListener(v -> finish());  // Finish the current activity and go back to the previous one
 
-//        buttonCheckout.setOnClickListener(v -> {
-//            // Start CheckoutActivity (create this activity if it doesn't exist)
-//            Intent intent = new Intent(OrderDetailsActivity.this, CheckoutActivity.class);
-//            // Optionally pass data needed for checkout
-//            startActivity(intent);
-//        });
+        buttonCheckout.setOnClickListener(v -> {
+            // Start CheckoutActivity (create this activity if it doesn't exist)
+            Intent intent = new Intent(OrderDetailsActivity.this, CheckoutActivity.class);
+            // Optionally pass data needed for checkout
+            intent.putExtra("auctionId",auctionId);
+            intent.putExtra("currentPrice", currentPrice);
+            intent.putExtra("jewelryImage", jewelryImageValue);
+            intent.putExtra("itemName", jewelryNameValue);
+            startActivity(intent);
+        });
     }
 }
