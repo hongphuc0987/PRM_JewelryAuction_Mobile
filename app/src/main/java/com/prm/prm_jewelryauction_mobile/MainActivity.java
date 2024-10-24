@@ -7,7 +7,10 @@ import androidx.fragment.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.prm.prm_jewelryauction_mobile.activity.auth.LoginActivity;
@@ -62,6 +65,13 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         });
+        String versionRelease = Build.VERSION.RELEASE; // Lấy phiên bản Android (ví dụ: "11")
+        int sdkVersion = Build.VERSION.SDK_INT; // Lấy phiên bản SDK (ví dụ: 30 cho Android 11)
+
+        // In ra log
+        Log.d("AndroidVersion", "Version Release: " + versionRelease);
+        Log.d("AndroidVersion", "SDK Version: " + sdkVersion);
+
     }
 
     private boolean isUserLoggedIn() {

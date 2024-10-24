@@ -170,7 +170,7 @@ public class AddJewelryFragment extends Fragment {
     }
 
     private void setupRecyclerView() {
-        materialAdapter = new MaterialAdapter(getContext(), availableMaterials, selectedMaterials);
+//        materialAdapter = new MaterialAdapter(getContext(), availableMaterials, selectedMaterials);
         rvMaterials.setLayoutManager(new LinearLayoutManager(getContext()));
         rvMaterials.setAdapter(materialAdapter);
     }
@@ -178,8 +178,8 @@ public class AddJewelryFragment extends Fragment {
     private void addMaterialRow() {
         // Add a new empty material to the list
         MaterialModel emptyMaterial = new MaterialModel(
-                "", // createdAt (empty string for default)
-                "", // updatedAt (empty string for default)
+                 // createdAt (empty string for default)
+                // updatedAt (empty string for default)
                 0,  // id (0 to indicate no specific ID)
                 "", // name (empty string)
                 ""  // unit (empty string)
@@ -190,10 +190,10 @@ public class AddJewelryFragment extends Fragment {
 
     private List<MaterialModel> generateFakeMaterials() {
         List<MaterialModel> materials = new ArrayList<>();
-        materials.add(new MaterialModel("2023-01-01", "2023-02-01", 1, "Gold", "grams"));
-        materials.add(new MaterialModel("2023-01-01", "2023-02-01", 2, "Silver", "grams"));
-        materials.add(new MaterialModel("2023-01-01", "2023-02-01", 3, "Platinum", "grams"));
-        materials.add(new MaterialModel("2023-01-01", "2023-02-01", 4, "Diamond", "carats"));
+        materials.add(new MaterialModel( 1, "Gold", "grams"));
+        materials.add(new MaterialModel( 2, "Silver", "grams"));
+        materials.add(new MaterialModel( 3, "Platinum", "grams"));
+        materials.add(new MaterialModel( 4, "Diamond", "carats"));
         return materials;
     }
 

@@ -54,9 +54,11 @@
         <activity android:name=".activity.auction.BiddingActivity" />
         <activity android:name=".activity.auction.WinAuctionListActivity" />
         <activity android:name=".activity.OrderDetailsActivity"/>
+        <activity android:name=".activity.jewelry.AddJewelryActivity" />
+
 
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 </manifest>

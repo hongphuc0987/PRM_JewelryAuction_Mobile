@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import com.prm.prm_jewelryauction_mobile.activity.auction.WinAuctionListActivity;  // Import your Order List activity
 import com.prm.prm_jewelryauction_mobile.R;
+import com.prm.prm_jewelryauction_mobile.activity.jewelry.AddJewelryActivity;
 import com.prm.prm_jewelryauction_mobile.activity.product_management.ProductManagementActivity;
 import com.prm.prm_jewelryauction_mobile.activity.payment.PaymentActivity;
 import com.prm.prm_jewelryauction_mobile.activity.auth.LoginActivity;
@@ -61,13 +62,13 @@ public class ProfileFragment extends Fragment {
             Intent intent = new Intent(getActivity(), WinAuctionListActivity.class);
             startActivity(intent);
         });
-        addIconWithName(iconContainer, R.drawable.ic_add, "Add Product", () -> navigateToFragment(new AddJewelryFragment()));
+        addIconWithName(iconContainer, R.drawable.ic_add, "Add Product", () -> {
+            Intent intent = new Intent(getActivity(), AddJewelryActivity.class);
+            startActivity(intent);
+        });
         addIconWithName(iconContainer, R.drawable.ic_logout, "Logout", this::logout);
-
         return view;
     }
-
-    // Helper method to dynamically add icons with names
     private void addIconWithName(LinearLayout parent, int iconResId, String name, Runnable onClickAction) {
         // Create a vertical layout to hold the icon and name
         LinearLayout itemLayout = new LinearLayout(getContext());
@@ -96,7 +97,6 @@ public class ProfileFragment extends Fragment {
         iconName.setGravity(Gravity.CENTER);
         iconName.setTextColor(Color.BLACK);
         iconName.setTextSize(14);
-
         // Add the icon and name to the item layout
         itemLayout.addView(icon);
         itemLayout.addView(iconName);
@@ -130,3 +130,4 @@ public class ProfileFragment extends Fragment {
         startActivity(intent);
     }
 }
+
