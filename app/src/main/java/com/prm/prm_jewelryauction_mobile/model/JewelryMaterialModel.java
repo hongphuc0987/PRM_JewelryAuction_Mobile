@@ -22,4 +22,16 @@ public class JewelryMaterialModel {
     public double getWeight() {
         return weight;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setMaterial(MaterialModel material) {
+        this.material = material;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
 }
