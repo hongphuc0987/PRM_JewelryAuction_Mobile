@@ -65,7 +65,7 @@ import retrofit2.Response;
 public class AddJewelryActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE_PICK = 1;
     private static final int REQUEST_CODE_PERMISSIONS = 100;
-    private EditText etJewelryName, etJewelryDescription, etSize;
+    private EditText etJewelryName, etJewelryDescription, etSize, etColor;
     private Spinner spinnerCategory, spinnerCollection, spinnerBrand, spinnerCondition, spinnerSex;
     private Button btnUploadImage, btnSubmit;
     private ImageView imgPreview, btnAddMaterial;
@@ -90,6 +90,7 @@ public class AddJewelryActivity extends AppCompatActivity {
         etJewelryName = findViewById(R.id.etJewelryName);
         etJewelryDescription = findViewById(R.id.etJewelryDescription);
         etSize = findViewById(R.id.etSize);
+        etColor = findViewById(R.id.etColor);
         spinnerCategory = findViewById(R.id.spinnerCategory);
         spinnerCollection = findViewById(R.id.spinnerCollection);
         spinnerBrand = findViewById(R.id.spinnerBrand);
@@ -400,9 +401,11 @@ public class AddJewelryActivity extends AppCompatActivity {
         String name = etJewelryName.getText().toString().trim();
         String description = etJewelryDescription.getText().toString().trim();
         String size = etSize.getText().toString().trim();
+        String color = etColor.getText().toString().trim();
         int categoryId = categoryList.get(spinnerCategory.getSelectedItemPosition()).getId();
         String collectionName = collectionList.get(spinnerCollection.getSelectedItemPosition()).getName();
         String brandName = brandList.get(spinnerBrand.getSelectedItemPosition()).getName();
+        float weight = 0.0f;
 
         if (name.isEmpty() || description.isEmpty() || size.isEmpty()) {
             Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
@@ -410,17 +413,21 @@ public class AddJewelryActivity extends AppCompatActivity {
         }
 
         List<JewelryMaterialRequest> jewelryMaterials = materialAdapter.getSelectedJewelryMaterials();
+        for (JewelryMaterialRequest material : jewelryMaterials) {
+            weight += material.getWeight();
+        }
 
         Map<String, RequestBody> jewelryRequestMap = new HashMap<>();
         jewelryRequestMap.put("name", RequestBody.create(MediaType.parse("text/plain"), name));
         jewelryRequestMap.put("description", RequestBody.create(MediaType.parse("text/plain"), description));
         jewelryRequestMap.put("category", RequestBody.create(MediaType.parse("text/plain"), String.valueOf(categoryId)));
         jewelryRequestMap.put("size", RequestBody.create(MediaType.parse("text/plain"), size));
-        jewelryRequestMap.put("color", RequestBody.create(MediaType.parse("text/plain"), "color")); // assuming color is a static value
+        jewelryRequestMap.put("color", RequestBody.create(MediaType.parse("text/plain"), color));
         jewelryRequestMap.put("sex", RequestBody.create(MediaType.parse("text/plain"), selectedSex.name()));
         jewelryRequestMap.put("brand", RequestBody.create(MediaType.parse("text/plain"), brandName));
         jewelryRequestMap.put("jewelryCondition", RequestBody.create(MediaType.parse("text/plain"), selectedCondition.name()));
         jewelryRequestMap.put("collection", RequestBody.create(MediaType.parse("text/plain"), collectionName));
+        jewelryRequestMap.put("weight", RequestBody.create(MediaType.parse("text/plain"), String.valueOf(weight)));
 
         for (int i = 0; i < jewelryMaterials.size(); i++) {
             JewelryMaterialRequest material = jewelryMaterials.get(i);
@@ -428,17 +435,12 @@ public class AddJewelryActivity extends AppCompatActivity {
             jewelryRequestMap.put("materials[" + i + "].weight", RequestBody.create(MediaType.parse("text/plain"), String.valueOf(material.getWeight())));
         }
 
-
-
-
-
-
-
         MultipartBody.Part imageThumbnailPart = null;
         if (imageUri != null) {
             RequestBody requestBody = createRequestBodyFromUri(imageUri);
             if (requestBody != null) {
-                imageThumbnailPart = MultipartBody.Part.createFormData("imageThumbnail", "image.jpg", requestBody);
+                String fileName = getFileNameFromUri(imageUri);
+                imageThumbnailPart = MultipartBody.Part.createFormData("imageThumbnail", fileName, requestBody);
             } else {
                 Toast.makeText(this, "Không thể tạo RequestBody từ ảnh", Toast.LENGTH_SHORT).show();
                 return;
@@ -481,7 +483,10 @@ public class AddJewelryActivity extends AppCompatActivity {
         try {
             InputStream inputStream = getContentResolver().openInputStream(uri);
             byte[] bytes = getBytes(inputStream);
-            return RequestBody.create(MediaType.parse("image/*"), bytes);
+
+            // Lấy kiểu MIME từ URI
+            String contentType = getContentResolver().getType(uri);
+            return RequestBody.create(MediaType.parse(contentType), bytes);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -511,6 +516,18 @@ public class AddJewelryActivity extends AppCompatActivity {
         spinnerSex.setSelection(0);
         imgPreview.setImageURI(null);
         imageUri = null;
+    }
+
+    private String getFileNameFromUri(Uri uri) {
+        String fileName = null;
+        String[] projection = {MediaStore.Images.Media.DISPLAY_NAME};
+        CursorLoader cursorLoader = new CursorLoader(this, uri, projection, null, null, null);
+        Cursor cursor = cursorLoader.loadInBackground();
+        if (cursor != null && cursor.moveToFirst()) {
+            fileName = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME));
+            cursor.close();
+        }
+        return fileName;
     }
 
 
