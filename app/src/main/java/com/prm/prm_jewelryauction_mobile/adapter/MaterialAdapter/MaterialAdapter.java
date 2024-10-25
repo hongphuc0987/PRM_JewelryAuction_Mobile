@@ -27,6 +27,7 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
     private final List<JewelryMaterialModel> jewelryMaterials;
     private final Context context;
     private MaterialDeleteListener deleteListener;
+    private EditText etWeight;
 
     public MaterialAdapter(Context context, List<MaterialModel> availableMaterials,
                            List<MaterialModel> selectedMaterials, MaterialDeleteListener deleteListener) {
@@ -59,11 +60,20 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
 
         holder.etWeight.setText(String.valueOf(jewelryMaterial.getWeight()));
 
-        holder.etWeight.setOnFocusChangeListener((v, hasFocus) -> {
-            if (!hasFocus) {
-                String weightStr = holder.etWeight.getText().toString().trim();
+        holder.etWeight.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String weightStr = s.toString().trim();
                 double weight = weightStr.isEmpty() ? 0 : Double.parseDouble(weightStr);
                 jewelryMaterial.setWeight(weight);
+            }
+
+            @Override
+            public void afterTextChanged(android.text.Editable s) {
             }
         });
 
