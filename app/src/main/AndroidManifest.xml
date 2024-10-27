@@ -57,7 +57,7 @@
         <activity android:name=".activity.auction.WinAuctionListActivity" />
         <activity android:name=".activity.OrderDetailsActivity"/>
         <activity android:name=".activity.jewelry.AddJewelryActivity" />
-
+        <activity android:name=".activity.product_management.DetailValuating" />
 
     </application>
     <uses-permission android:name="android.permission.INTERNET" />

@@ -3,19 +3,26 @@ package com.prm.prm_jewelryauction_mobile.activity.product_management;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.TooltipCompat;
 import com.prm.prm_jewelryauction_mobile.R;
+import com.prm.prm_jewelryauction_mobile.activity.auction.BiddingActivity;
 import com.prm.prm_jewelryauction_mobile.config.RetrofitClient;
 import com.prm.prm_jewelryauction_mobile.model.JewelryModel;
+import com.prm.prm_jewelryauction_mobile.model.ValuationRequest;
 import com.prm.prm_jewelryauction_mobile.service.ApiProduct;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -176,7 +183,14 @@ public class DetailActivity extends AppCompatActivity {
         // Get references to the EditText fields
         EditText notesEditText = dialogView.findViewById(R.id.valuation_notes);
         EditText addressEditText = dialogView.findViewById(R.id.valuation_address);
-
+        EditText desiredPriceEditText = dialogView.findViewById(R.id.desired_price);
+        Spinner valuationMethodSpinner = dialogView.findViewById(R.id.valuation_method_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.valuation_methods,  // Define this array in strings.xml
+                android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        valuationMethodSpinner.setAdapter(adapter);
         // Create the AlertDialog
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setView(dialogView)
@@ -186,35 +200,69 @@ public class DetailActivity extends AppCompatActivity {
         Button cancelButton = dialogView.findViewById(R.id.cancel_button);
         Button submitButton = dialogView.findViewById(R.id.submit_button);
 
-        // Handle Cancel Button Click
         cancelButton.setOnClickListener(v -> {
-            dialog.dismiss();  // Close the dialog without saving
+            dialog.dismiss();
         });
 
-        // Handle Submit Button Click
         submitButton.setOnClickListener(v -> {
             String notes = notesEditText.getText().toString().trim();
             String address = addressEditText.getText().toString().trim();
+            String desiredPriceStr = desiredPriceEditText.getText().toString().trim();
+            String valuationMethod = valuationMethodSpinner.getSelectedItem().toString();
 
-            // Validate the address field
             if (address.isEmpty()) {
                 addressEditText.setError("Address is required.");
                 addressEditText.requestFocus();
+            } else if (desiredPriceStr.isEmpty()) {
+                desiredPriceEditText.setError("Desired Price is required.");
+                desiredPriceEditText.requestFocus();
             } else {
-                // Handle the save action
-                handleValuationUpdate(notes, address);
-                dialog.dismiss();  // Close the dialog if validation passes
+                int desiredPrice = Integer.parseInt(desiredPriceStr);
+                handleValuationUpdate(notes, address, desiredPrice, valuationMethod);
+                dialog.dismiss();
             }
         });
 
         dialog.show();
     }
 
-    private void handleValuationUpdate(String notes, String address) {
+    private void handleValuationUpdate(String notes, String address, int desiredPrice, String valuationMethod) {
         // Use the entered notes and address (e.g., send to API or update UI)
-        System.out.println("Updated Notes: " + notes);
-        System.out.println("Updated Address: " + address);
+        int jewelryId = getIntent().getIntExtra("JEWELRY_ID", -1);  // Get the product ID
 
-        // TODO: Add your API call here if required to submit the data
+        ValuationRequest valuationRequest = new ValuationRequest(
+                jewelryId,
+                desiredPrice,
+                "VNPAY",
+                notes,
+                valuationMethod,
+                address,
+                false
+        );
+        System.out.println(valuationRequest.toString());
+        ApiProduct apiProduct = RetrofitClient.getRetrofitInstanceWithToken(this).create(ApiProduct.class);
+        Call<ResponseBody> call = apiProduct.valuationProduct(valuationRequest);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                System.out.println(response);
+                if (response.isSuccessful()) {
+                    Toast.makeText(DetailActivity.this, "Require valuation success", Toast.LENGTH_SHORT).show();
+                } else {
+                    try {
+                        // Extract the error message from the response body
+                        Toast.makeText(DetailActivity.this, "You dont have enought money", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(DetailActivity.this, "Error reading response", Toast.LENGTH_SHORT).show();
+                    }                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(DetailActivity.this, "Something wrong", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
