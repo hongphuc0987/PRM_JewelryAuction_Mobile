@@ -3,24 +3,85 @@
     android:orientation="vertical"
     android:padding="24dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="#F5F5F5">
 
-    <!-- Notes Input Field -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Valuation fee is 500.000 VND"
+        android:textColor="@color/design_default_color_primary_dark"
+        android:textSize="20sp"
+        android:layout_marginBottom="10dp" />
+    <!-- Notes Label and Input -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Notes"
+        android:textSize="16sp"
+        android:layout_marginBottom="4dp" />
+
     <EditText
         android:id="@+id/valuation_notes"
         android:hint="Enter Notes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
-        android:gravity="top" />
+        android:gravity="top"
+        android:background="@drawable/rounded_edittext"
+        android:padding="12dp" />
 
-    <!-- Address Input Field -->
+    <!-- Address Label and Input -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Address (Required)"
+        android:textSize="16sp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="4dp" />
+
     <EditText
         android:id="@+id/valuation_address"
-        android:hint="Enter Address (Required)"
+        android:hint="Enter Address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPostalAddress" />
+        android:inputType="textPostalAddress"
+        android:background="@drawable/rounded_edittext"
+        android:padding="12dp" />
+
+    <!-- Desired Price Label and Input -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Desired Price"
+        android:textSize="16sp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="4dp" />
+
+    <EditText
+        android:id="@+id/desired_price"
+        android:hint="Enter Desired Price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:background="@drawable/rounded_edittext"
+        android:padding="12dp" />
+
+    <!-- Valuation Method Label and Spinner -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Valuation Method"
+        android:textSize="16sp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="4dp" />
+
+    <Spinner
+        android:id="@+id/valuation_method_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_edittext"
+        android:padding="8dp" />
 
     <!-- Horizontal Layout for Buttons -->
     <LinearLayout
@@ -49,5 +110,4 @@
             android:textColor="@android:color/white"
             android:backgroundTint="@android:color/holo_blue_light" />
     </LinearLayout>
-
 </LinearLayout>

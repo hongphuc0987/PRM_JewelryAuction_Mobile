@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Set Auction Time"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:paddingBottom="12dp" />
+
+    <Button
+        android:id="@+id/button_start_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Start Time" />
+
+    <TextView
+        android:id="@+id/text_start_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="Start Time: Not Selected" />
+
+    <Button
+        android:id="@+id/button_end_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select End Time"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/text_end_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="End Time: Not Selected" />
+
+    <EditText
+        android:id="@+id/edit_starting_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Starting Price"
+        android:inputType="numberDecimal"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/button_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Confirm"
+        android:layout_marginTop="16dp" />
+</LinearLayout>
