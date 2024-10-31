@@ -170,6 +170,7 @@ public class AddJewelryActivity extends AppCompatActivity {
                     int count = Math.min(clipData.getItemCount(), 3);
                     for (int i = 0; i < count; i++) {
                         Uri uri = clipData.getItemAt(i).getUri();
+                        imageUris.add(uri);
                         if (i == 0) setImageToView(uri, imgPreview1);
                         if (i == 1) setImageToView(uri, imgPreview2);
                         if (i == 2) setImageToView(uri, imgPreview3);
@@ -177,6 +178,7 @@ public class AddJewelryActivity extends AppCompatActivity {
                 } else {
                     Uri uri = data.getData();
                     if (uri != null) {
+                        imageUris.add(uri);
                         setImageToView(uri, imgPreview1);
                     }
                 }
@@ -492,9 +494,35 @@ public class AddJewelryActivity extends AppCompatActivity {
         }
 
         List<MultipartBody.Part> imagesParts = new ArrayList<>();
-        if (imgPreview1.getDrawable() != null) imagesParts.add(prepareImagePart("images[]", getUriFromImageView(imgPreview1)));
-        if (imgPreview2.getDrawable() != null) imagesParts.add(prepareImagePart("images[]", getUriFromImageView(imgPreview2)));
-        if (imgPreview3.getDrawable() != null) imagesParts.add(prepareImagePart("images[]", getUriFromImageView(imgPreview3)));
+        if (!imageUris.isEmpty()) {
+            MultipartBody.Part part1 = prepareImagePart("imagesFile", imageUris.get(0));
+            if (part1 != null) imagesParts.add(part1);
+        }
+        if (!imageUris.isEmpty()) {
+            MultipartBody.Part part2 = prepareImagePart("imagesFile", imageUris.get(1));
+            if (part2 != null) imagesParts.add(part2);
+        }
+        if (!imageUris.isEmpty()) {
+            MultipartBody.Part part3 = prepareImagePart("imagesFile", imageUris.get(1));
+            if (part3 != null) imagesParts.add(part3);
+        }
+
+        if (imagesParts.isEmpty()) {
+            Toast.makeText(this, "Không có hình ảnh nào để upload.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Log.d("AddJewelryActivity", "Images parts size: " + imagesParts.size());
+        for (MultipartBody.Part part : imagesParts) {
+            if (part.body() != null) {
+                Log.d("AddJewelryActivity", "Part Content-Type: " + part.body().contentType());
+                try {
+                    Log.d("AddJewelryActivity", "Part Content-Length: " + part.body().contentLength());
+                } catch (IOException e) {
+                    Log.e("AddJewelryActivity", "Error reading part content length: " + e.getMessage());
+                }
+            }
+        }
         ApiJewelryService apiService = RetrofitClient.getRetrofitInstanceWithToken(this)
                 .create(ApiJewelryService.class);
 
@@ -525,22 +553,34 @@ public class AddJewelryActivity extends AppCompatActivity {
     }
 
     private Uri getUriFromImageView(ImageView imageView) {
-        if (imageView == imgPreview1) return imageUris.get(0);
-        if (imageView == imgPreview2) return imageUris.get(1);
-        if (imageView == imgPreview3) return imageUris.get(2);
+        if (imageView == imgPreview1) return imageUris.size() > 0 ? imageUris.get(0) : null;
+        if (imageView == imgPreview2) return imageUris.size() > 1 ? imageUris.get(1) : null;
+        if (imageView == imgPreview3) return imageUris.size() > 2 ? imageUris.get(2) : null;
         return null;
     }
+
     private MultipartBody.Part prepareImagePart(String partName, Uri fileUri) {
         RequestBody requestBody = createRequestBodyFromUri(fileUri);
+        if (requestBody == null) {
+            Toast.makeText(this, "Không thể tạo RequestBody từ URI: " + fileUri, Toast.LENGTH_SHORT).show();
+            return null;
+        }
         String fileName = getFileNameFromUri(fileUri);
         return MultipartBody.Part.createFormData(partName, fileName, requestBody);
     }
 
 
+
     private RequestBody createRequestBodyFromUri(Uri uri) {
         try {
             InputStream inputStream = getContentResolver().openInputStream(uri);
+            if (inputStream == null) {
+                Log.e("AddJewelryActivity", "InputStream is null for URI: " + uri.toString());
+                return null;
+            }
+
             byte[] bytes = getBytes(inputStream);
+            Log.d("AddJewelryActivity", "Bytes size: " + bytes.length);
 
             String contentType = getContentResolver().getType(uri);
             return RequestBody.create(MediaType.parse(contentType), bytes);
@@ -554,7 +594,6 @@ public class AddJewelryActivity extends AppCompatActivity {
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
         int bufferSize = 1024;
         byte[] buffer = new byte[bufferSize];
-
         int len;
         while ((len = inputStream.read(buffer)) != -1) {
             byteBuffer.write(buffer, 0, len);
