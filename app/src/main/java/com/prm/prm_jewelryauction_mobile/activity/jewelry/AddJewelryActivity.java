@@ -503,7 +503,7 @@ public class AddJewelryActivity extends AppCompatActivity {
             if (part2 != null) imagesParts.add(part2);
         }
         if (!imageUris.isEmpty()) {
-            MultipartBody.Part part3 = prepareImagePart("imagesFile", imageUris.get(1));
+            MultipartBody.Part part3 = prepareImagePart("imagesFile", imageUris.get(2));
             if (part3 != null) imagesParts.add(part3);
         }
 
