@@ -48,7 +48,7 @@ dependencies {
 //            "exclude" to listOf("")
 //    )))
 
-//    implementation(fileTree(mapOf("dir" to "/Users/tranthihongphuc/Documents/ZaloPayLib", "include" to listOf("*.aar", "*.jar"), "exclude" to listOf(""))))
+    implementation(fileTree(mapOf("dir" to "/Users/tranthihongphuc/Documents/ZaloPayLib", "include" to listOf("*.aar", "*.jar"), "exclude" to listOf(""))))
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")

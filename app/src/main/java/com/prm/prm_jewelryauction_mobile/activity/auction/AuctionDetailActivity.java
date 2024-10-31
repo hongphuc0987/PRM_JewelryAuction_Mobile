@@ -29,7 +29,7 @@ public class AuctionDetailActivity extends AppCompatActivity {
     private ImageView imgThumbnail, imgJewelry1, imgJewelry2, imgJewelry3;
     private Button btnAuction, btnBack;
 
-    String baseUrl = "http://10.0.2.2:8080/images/users/";
+    String baseUrl = "http://35.194.232.209:9090/uploads/jewelry/";
 
 
     @Override

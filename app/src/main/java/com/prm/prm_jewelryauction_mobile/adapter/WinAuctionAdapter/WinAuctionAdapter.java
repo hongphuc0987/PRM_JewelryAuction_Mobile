@@ -27,11 +27,13 @@ public class WinAuctionAdapter extends RecyclerView.Adapter<WinAuctionAdapter.Au
 
     private List<AuctionModel> auctionList;
     private Context context;
+    String baseUrl = "http://35.194.232.209:9090/uploads/jewelry/";
 
     public WinAuctionAdapter(List<AuctionModel> auctionList, Context context) {
         this.auctionList = auctionList;
         this.context = context;
     }
+
 
     @NonNull
     @Override
@@ -48,8 +50,8 @@ public class WinAuctionAdapter extends RecyclerView.Adapter<WinAuctionAdapter.Au
         holder.jewelryName.setText(item.getJewelry().getName());
         holder.winningPrice.setText((String.format("Winning Price: %s", item.getCurrentPrice()))); // Update to current price
         holder.auctionDate.setText(String.format("Auction End Date: %s", item.getEndTime())); // Use end time
-        if (item.getJewelry().getJewelryImages() != null && !item.getJewelry().getJewelryImages().isEmpty()) {
-            Picasso.get().load(item.getJewelry().getJewelryImages().get(0).getUrl()).into(holder.jewelryImage);
+        if (item.getJewelry().getThumbnail() != null && !item.getJewelry().getThumbnail().isEmpty()) {
+            Picasso.get().load(baseUrl + item.getJewelry().getThumbnail()).into(holder.jewelryImage);
         } else {
             holder.jewelryImage.setImageResource(R.drawable.ic_errorimage);  // Placeholder image
         }

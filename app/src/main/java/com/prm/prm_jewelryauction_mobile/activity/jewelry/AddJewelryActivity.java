@@ -2,6 +2,7 @@ package com.prm.prm_jewelryauction_mobile.activity.jewelry;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -64,23 +65,25 @@ import retrofit2.Response;
 
 public class AddJewelryActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE_PICK = 1;
+    private static final int REQUEST_IMAGE_PICK_FOR_JEWELRY = 3;
     private static final int REQUEST_CODE_PERMISSIONS = 100;
     private EditText etJewelryName, etJewelryDescription, etSize, etColor;
     private Spinner spinnerCategory, spinnerCollection, spinnerBrand, spinnerCondition, spinnerSex;
-    private Button btnUploadImage, btnSubmit;
-    private ImageView imgPreview, btnAddMaterial;
+    private Button btnUploadImage, btnSubmit, btnChooseImages;
+    private ImageView imgPreview, btnAddMaterial, imgPreview1, imgPreview2, imgPreview3;
     private List<CategoryModel> categoryList;
     private List<BrandModel> brandList;
     private List<CollectionModel> collectionList;
     private Uri imageUri;
+
+    private List<Uri> imageUris = new ArrayList<>();
+
     private JewelryCondition selectedCondition;
     private Sex selectedSex;
     private RecyclerView rvMaterials;
-
     private MaterialAdapter materialAdapter;
     private List<MaterialModel> availableMaterials;
     private List<MaterialModel> selectedMaterials;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,9 +100,13 @@ public class AddJewelryActivity extends AppCompatActivity {
         spinnerCondition = findViewById(R.id.spinnerCondition);
         spinnerSex = findViewById(R.id.rgSex);
         btnUploadImage = findViewById(R.id.btnUploadImage);
+        btnChooseImages = findViewById(R.id.btnChooseImages);
         btnSubmit = findViewById(R.id.btnSubmit);
         btnAddMaterial = findViewById(R.id.btnAddMaterial);
         imgPreview = findViewById(R.id.imgPreview);
+        imgPreview1 = findViewById(R.id.imgPreview1);
+        imgPreview2 = findViewById(R.id.imgPreview2);
+        imgPreview3 = findViewById(R.id.imgPreview3);
         rvMaterials = findViewById(R.id.rvMaterials);
 
         loadCategories();
@@ -113,6 +120,14 @@ public class AddJewelryActivity extends AppCompatActivity {
         btnUploadImage.setOnClickListener(v -> {
             if (checkStoragePermission()) {
                 openImagePicker();
+            } else {
+                requestStoragePermission();
+            }
+        });
+
+        btnChooseImages.setOnClickListener(v -> {
+            if (checkStoragePermission()) {
+                openImagePickerForJewelryImages();
             } else {
                 requestStoragePermission();
             }
@@ -134,24 +149,54 @@ public class AddJewelryActivity extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_IMAGE_PICK);
     }
 
+    private void openImagePickerForJewelryImages() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        startActivityForResult(Intent.createChooser(intent, "Select Jewelry Images"), REQUEST_IMAGE_PICK_FOR_JEWELRY);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQUEST_IMAGE_PICK && resultCode == Activity.RESULT_OK && data != null) {
-            imageUri = data.getData();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-                imgPreview.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-                Toast.makeText(this, "Không thể tải ảnh", Toast.LENGTH_SHORT).show();
+        if (resultCode == Activity.RESULT_OK && data != null) {
+            if (requestCode == REQUEST_IMAGE_PICK) {
+                Uri uri = data.getData();
+                imageUri = uri;
+                setImageToView(uri, imgPreview);
+            } else if (requestCode == REQUEST_IMAGE_PICK_FOR_JEWELRY) {
+                ClipData clipData = data.getClipData();
+                if (clipData != null) {
+                    int count = Math.min(clipData.getItemCount(), 3);
+                    for (int i = 0; i < count; i++) {
+                        Uri uri = clipData.getItemAt(i).getUri();
+                        if (i == 0) setImageToView(uri, imgPreview1);
+                        if (i == 1) setImageToView(uri, imgPreview2);
+                        if (i == 2) setImageToView(uri, imgPreview3);
+                    }
+                } else {
+                    Uri uri = data.getData();
+                    if (uri != null) {
+                        setImageToView(uri, imgPreview1);
+                    }
+                }
             }
         }
     }
 
+
+    private void setImageToView(Uri uri, ImageView imageView) {
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+            imageView.setImageBitmap(bitmap);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Error loading image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private boolean checkStoragePermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // Android 13 trở lên
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             return ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
                     == PackageManager.PERMISSION_GRANTED;
         } else {
@@ -169,7 +214,6 @@ public class AddJewelryActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_PERMISSIONS);
         }
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
@@ -448,7 +492,9 @@ public class AddJewelryActivity extends AppCompatActivity {
         }
 
         List<MultipartBody.Part> imagesParts = new ArrayList<>();
-
+        if (imgPreview1.getDrawable() != null) imagesParts.add(prepareImagePart("images[]", getUriFromImageView(imgPreview1)));
+        if (imgPreview2.getDrawable() != null) imagesParts.add(prepareImagePart("images[]", getUriFromImageView(imgPreview2)));
+        if (imgPreview3.getDrawable() != null) imagesParts.add(prepareImagePart("images[]", getUriFromImageView(imgPreview3)));
         ApiJewelryService apiService = RetrofitClient.getRetrofitInstanceWithToken(this)
                 .create(ApiJewelryService.class);
 
@@ -478,13 +524,24 @@ public class AddJewelryActivity extends AppCompatActivity {
                 });
     }
 
+    private Uri getUriFromImageView(ImageView imageView) {
+        if (imageView == imgPreview1) return imageUris.get(0);
+        if (imageView == imgPreview2) return imageUris.get(1);
+        if (imageView == imgPreview3) return imageUris.get(2);
+        return null;
+    }
+    private MultipartBody.Part prepareImagePart(String partName, Uri fileUri) {
+        RequestBody requestBody = createRequestBodyFromUri(fileUri);
+        String fileName = getFileNameFromUri(fileUri);
+        return MultipartBody.Part.createFormData(partName, fileName, requestBody);
+    }
+
 
     private RequestBody createRequestBodyFromUri(Uri uri) {
         try {
             InputStream inputStream = getContentResolver().openInputStream(uri);
             byte[] bytes = getBytes(inputStream);
 
-            // Lấy kiểu MIME từ URI
             String contentType = getContentResolver().getType(uri);
             return RequestBody.create(MediaType.parse(contentType), bytes);
         } catch (IOException e) {
@@ -529,7 +586,4 @@ public class AddJewelryActivity extends AppCompatActivity {
         }
         return fileName;
     }
-
-
-
 }
