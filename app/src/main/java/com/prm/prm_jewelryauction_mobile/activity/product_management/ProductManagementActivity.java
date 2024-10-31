@@ -6,6 +6,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.prm.prm_jewelryauction_mobile.R;
 import com.prm.prm_jewelryauction_mobile.fragment.ProductFragment;
+import com.prm.prm_jewelryauction_mobile.fragment.ValuationFragment;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -37,12 +38,14 @@ public class ProductManagementActivity extends AppCompatActivity {
             public Fragment getItem(int position) {
                 switch (position) {
                     case 0:
-                        return new ProductFragment(); // Trả về fragment cho tab "Sản Phẩm"
+                        return new ProductFragment();
                     case 1:
-                        return new ProductFragment(); // Tạo fragment cho tab "Đấu Giá"
+                        return new ValuationFragment(); // Trả về fragment cho tab "Sản Phẩm"
                     case 2:
-                        return new ProductFragment(); // Tạo fragment cho tab "Đấu Giá Thắng"
+                        return new ProductFragment(); // Tạo fragment cho tab "Đấu Giá"
                     case 3:
+                        return new ProductFragment(); // Tạo fragment cho tab "Đấu Giá Thắng"
+                    case 4:
                         return new ProductFragment(); // Tạo fragment cho tab "Giao Dịch Của Tôi"
                     default:
                         return null;
@@ -51,7 +54,7 @@ public class ProductManagementActivity extends AppCompatActivity {
 
             @Override
             public int getCount() {
-                return 4; // Số lượng các tab
+                return 5; // Số lượng các tab
             }
 
             @Override
@@ -60,10 +63,12 @@ public class ProductManagementActivity extends AppCompatActivity {
                     case 0:
                         return "Sản Phẩm";
                     case 1:
-                        return "Đấu Giá";
+                        return "Định giá";
                     case 2:
-                        return "Đấu Giá Thắng";
+                        return "Đấu Giá";
                     case 3:
+                        return "Đấu Giá Thắng";
+                    case 4:
                         return "Giao Dịch Của Tôi";
                     default:
                         return null;
@@ -78,8 +83,7 @@ public class ProductManagementActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Số lượng các tab
-            return 4;
+            return 5;
         }
 
         @Override
@@ -98,12 +102,15 @@ public class ProductManagementActivity extends AppCompatActivity {
                     layout = inflater.inflate(R.layout.view_product, container, false);
                     break;
                 case 1:
-                    layout = inflater.inflate(R.layout.view_auction, container, false);
+                    layout = inflater.inflate(R.layout.view_valuating, container, false);
                     break;
                 case 2:
-                    layout = inflater.inflate(R.layout.view_won_auction, container, false);
+                    layout = inflater.inflate(R.layout.view_auction, container, false);
                     break;
                 case 3:
+                    layout = inflater.inflate(R.layout.view_won_auction, container, false);
+                    break;
+                case 4:
                     layout = inflater.inflate(R.layout.view_my_transactions, container, false);
                     break;
             }
@@ -123,10 +130,12 @@ public class ProductManagementActivity extends AppCompatActivity {
                 case 0:
                     return "Sản Phẩm";
                 case 1:
-                    return "Đấu Giá";
+                    return "Định giá";
                 case 2:
-                    return "Đấu Giá Thắng";
+                    return "Đấu Giá";
                 case 3:
+                    return "Đấu Giá Thắng";
+                case 4:
                     return "Giao Dịch Của Tôi";
             }
             return null;
