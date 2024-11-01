@@ -41,12 +41,6 @@ public class ProductManagementActivity extends AppCompatActivity {
                         return new ProductFragment();
                     case 1:
                         return new ValuationFragment(); // Trả về fragment cho tab "Sản Phẩm"
-                    case 2:
-                        return new ProductFragment(); // Tạo fragment cho tab "Đấu Giá"
-                    case 3:
-                        return new ProductFragment(); // Tạo fragment cho tab "Đấu Giá Thắng"
-                    case 4:
-                        return new ProductFragment(); // Tạo fragment cho tab "Giao Dịch Của Tôi"
                     default:
                         return null;
                 }
@@ -54,7 +48,7 @@ public class ProductManagementActivity extends AppCompatActivity {
 
             @Override
             public int getCount() {
-                return 5; // Số lượng các tab
+                return 2; // Số lượng các tab
             }
 
             @Override
@@ -64,12 +58,6 @@ public class ProductManagementActivity extends AppCompatActivity {
                         return "Sản Phẩm";
                     case 1:
                         return "Định giá";
-                    case 2:
-                        return "Đấu Giá";
-                    case 3:
-                        return "Đấu Giá Thắng";
-                    case 4:
-                        return "Giao Dịch Của Tôi";
                     default:
                         return null;
                 }
@@ -77,69 +65,6 @@ public class ProductManagementActivity extends AppCompatActivity {
         };
 
         viewPager.setAdapter(adapter);
-    }
-
-    private class CustomPagerAdapter extends androidx.viewpager.widget.PagerAdapter {
-
-        @Override
-        public int getCount() {
-            return 5;
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == object;
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            LayoutInflater inflater = LayoutInflater.from(ProductManagementActivity.this);
-            View layout = null;
-
-            // Hiển thị các layout khác nhau cho từng tab
-            switch (position) {
-                case 0:
-                    layout = inflater.inflate(R.layout.view_product, container, false);
-                    break;
-                case 1:
-                    layout = inflater.inflate(R.layout.view_valuating, container, false);
-                    break;
-                case 2:
-                    layout = inflater.inflate(R.layout.view_auction, container, false);
-                    break;
-                case 3:
-                    layout = inflater.inflate(R.layout.view_won_auction, container, false);
-                    break;
-                case 4:
-                    layout = inflater.inflate(R.layout.view_my_transactions, container, false);
-                    break;
-            }
-
-            container.addView(layout);
-            return layout;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((View) object);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "Sản Phẩm";
-                case 1:
-                    return "Định giá";
-                case 2:
-                    return "Đấu Giá";
-                case 3:
-                    return "Đấu Giá Thắng";
-                case 4:
-                    return "Giao Dịch Của Tôi";
-            }
-            return null;
-        }
     }
 }
 
