@@ -1,11 +1,13 @@
 package com.prm.prm_jewelryauction_mobile.activity.product_management;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +17,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.TooltipCompat;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.prm.prm_jewelryauction_mobile.R;
 import com.prm.prm_jewelryauction_mobile.activity.auction.BiddingActivity;
 import com.prm.prm_jewelryauction_mobile.config.RetrofitClient;
@@ -33,6 +39,8 @@ public class DetailActivity extends AppCompatActivity {
             , txtPrice, txtStatus, txtBrand, txtCategory, txtCollection, txtSeller;
     private Button editProductButton;
     private Button deleteProductButton, valuationButton; // Khai báo nút xóa
+    private ImageView imageThumbnail;
+    String baseUrl = "http://35.194.232.209:9090/uploads/jewelry/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +85,7 @@ public class DetailActivity extends AppCompatActivity {
         editProductButton = findViewById(R.id.edit_product_button);
         deleteProductButton = findViewById(R.id.delete_product_button); // Gán nút xóa từ layout
         valuationButton = findViewById(R.id.valuation_button);
+        imageThumbnail = findViewById(R.id.product_image);
         // Lấy thông tin sản phẩm từ Intent
 
         // Thiết lập sự kiện click cho nút Edit
@@ -173,6 +182,13 @@ public class DetailActivity extends AppCompatActivity {
         txtSex.setText("Sex: " + jewelry.getSex());
         txtPrice.setText("Price: " + jewelry.getStaringPrice());
         txtWeight.setText("Weight: " + jewelry.getWeight());
+        Glide.with(this)
+                .load(baseUrl + jewelry.getThumbnail())
+                .apply(new RequestOptions()
+                        .error(R.drawable.ic_errorimage)
+                        .skipMemoryCache(true)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE))
+                .into(imageThumbnail);
     }
 
 

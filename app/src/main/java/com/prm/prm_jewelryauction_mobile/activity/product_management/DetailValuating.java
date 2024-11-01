@@ -13,6 +13,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.widget.TooltipCompat;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.prm.prm_jewelryauction_mobile.R;
 import com.prm.prm_jewelryauction_mobile.config.RetrofitClient;
 import com.prm.prm_jewelryauction_mobile.model.Valuation;
@@ -39,6 +41,7 @@ public class DetailValuating extends AppCompatActivity {
     private Button valuationButton;
     private Calendar startTimeCalendar = Calendar.getInstance();
     private Calendar endTimeCalendar = Calendar.getInstance();
+    String baseUrl = "http://35.194.232.209:9090/uploads/jewelry/";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -184,5 +187,12 @@ public class DetailValuating extends AppCompatActivity {
         desiredPrice.setText("Desired Price: $" + valuation.getDesiredPrice());
         startingPrice.setText("Starting Price: $" + valuation.getStartingPrice());
         sellerIdDisplay.setText("Seller: " + valuation.getJewelry().getSellerId().getFullName());
+        Glide.with(this)
+                .load(baseUrl + valuation.getJewelry().getThumbnail())
+                .apply(new RequestOptions()
+                        .error(R.drawable.ic_errorimage)
+                        .skipMemoryCache(true)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE))
+                .into(productImage);
     }
 }
