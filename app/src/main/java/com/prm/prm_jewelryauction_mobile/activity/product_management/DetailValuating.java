@@ -15,8 +15,11 @@ import androidx.appcompat.widget.TooltipCompat;
 import com.bumptech.glide.Glide;
 import com.prm.prm_jewelryauction_mobile.R;
 import com.prm.prm_jewelryauction_mobile.config.RetrofitClient;
+import com.prm.prm_jewelryauction_mobile.data.request.auction.CreateAuctionRequest;
 import com.prm.prm_jewelryauction_mobile.model.Valuation;
 import com.prm.prm_jewelryauction_mobile.model.ValuationDetailResponse;
+import com.prm.prm_jewelryauction_mobile.service.ApiAuctionService;
+import com.prm.prm_jewelryauction_mobile.service.ApiJewelryService;
 import com.prm.prm_jewelryauction_mobile.service.ApiProduct;
 
 import retrofit2.Call;
@@ -33,12 +36,13 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class DetailValuating extends AppCompatActivity {
-    // Existing member variables (Views)
     private ImageView productImage;
     private TextView productNameDisplay, valuationValue, desiredPrice, startingPrice, sellerIdDisplay;
     private Button valuationButton;
     private Calendar startTimeCalendar = Calendar.getInstance();
     private Calendar endTimeCalendar = Calendar.getInstance();
+
+    Valuation valuation;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,11 +51,9 @@ public class DetailValuating extends AppCompatActivity {
 
         int productId = getIntent().getIntExtra("VALUATION_ID", -1);
 
-        // Setup Toolbar and initialize Views
         setupToolbar();
         initializeViews();
 
-        // Load the Valuation Details
         loadValuationDetail(productId);
     }
 
@@ -84,27 +86,52 @@ public class DetailValuating extends AppCompatActivity {
         TextView textEndTime = dialogView.findViewById(R.id.text_end_time);
         Button buttonStartTime = dialogView.findViewById(R.id.button_start_time);
         Button buttonEndTime = dialogView.findViewById(R.id.button_end_time);
-        EditText editStartingPrice = dialogView.findViewById(R.id.edit_starting_price);
+        EditText editStep= dialogView.findViewById(R.id.edit_step);
         Button buttonConfirm = dialogView.findViewById(R.id.button_confirm);
+        double startingPriceValue = valuation.getStartingPrice();
+        float step = (float) (startingPriceValue * 0.05);
+
+        editStep.setText(String.valueOf(step));
+        editStep.setEnabled(false);
 
         buttonStartTime.setOnClickListener(v -> showDateTimePicker(startTimeCalendar, textStartTime));
         buttonEndTime.setOnClickListener(v -> showDateTimePicker(endTimeCalendar, textEndTime));
 
         buttonConfirm.setOnClickListener(v -> {
-            if (validateAuctionInput(editStartingPrice)) {
-                double startingPriceValue = Double.parseDouble(editStartingPrice.getText().toString());
-                double step = startingPriceValue * 0.05;
+            if (validateAuctionInput()) {
+//                double startingPriceValue = valuation.getStartingPrice();
+//                float step = (float) (startingPriceValue * 0.05);
+                editStep.setText(String.valueOf(step));
+                editStep.setEnabled(false);
+                editStep.setFocusable(false);
 
-                String startTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+                String startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
                         .format(startTimeCalendar.getTime());
-                String endTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+                String endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
                         .format(endTimeCalendar.getTime());
 
-                Toast.makeText(this,
-                        "Auction Scheduled!\nStep: $" + step + "\nStart: " + startTime + "\nEnd: " + endTime,
-                        Toast.LENGTH_LONG).show();
+                CreateAuctionRequest auctionRequest = new CreateAuctionRequest(
+                        (long) valuation.getJewelry().getId(), startTime, endTime, step);
 
-                // TODO: Add API call to post auction here.
+                ApiAuctionService apiService = RetrofitClient.getRetrofitInstanceWithToken(this)
+                        .create(ApiAuctionService.class);
+                Call<Void> call = apiService.createAuction(auctionRequest);
+
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.isSuccessful()) {
+                            Toast.makeText(DetailValuating.this, "Auction Created Successfully!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(DetailValuating.this, "Failed to Create Auction", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(DetailValuating.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
@@ -135,11 +162,8 @@ public class DetailValuating extends AppCompatActivity {
         timePickerDialog.show();
     }
 
-    private boolean validateAuctionInput(EditText editStartingPrice) {
-        if (editStartingPrice.getText().toString().isEmpty()) {
-            Toast.makeText(this, "Please enter a starting price", Toast.LENGTH_SHORT).show();
-            return false;
-        }
+    private boolean validateAuctionInput() {
+
 
         if (startTimeCalendar.before(Calendar.getInstance())) {
             Toast.makeText(this, "Start time must be in the future", Toast.LENGTH_SHORT).show();
@@ -163,7 +187,7 @@ public class DetailValuating extends AppCompatActivity {
             @Override
             public void onResponse(Call<ValuationDetailResponse> call, Response<ValuationDetailResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Valuation valuation = response.body().getData();
+                    valuation = response.body().getData();
                     displayDetails(valuation);
                 } else {
                     Toast.makeText(DetailValuating.this, "Failed to load details", Toast.LENGTH_SHORT).show();
@@ -179,7 +203,7 @@ public class DetailValuating extends AppCompatActivity {
     }
 
     private void displayDetails(Valuation valuation) {
-        productNameDisplay.setText("Tên sản phẩm: " + valuation.getJewelry().getName());
+        productNameDisplay.setText("Product Name: " + valuation.getJewelry().getName());
         valuationValue.setText("Valuation value: $" + valuation.getValuation_value());
         desiredPrice.setText("Desired Price: $" + valuation.getDesiredPrice());
         startingPrice.setText("Starting Price: $" + valuation.getStartingPrice());

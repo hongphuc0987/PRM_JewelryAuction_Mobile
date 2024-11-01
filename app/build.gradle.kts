@@ -36,8 +36,8 @@ dependencies {
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation ("com.squareup.picasso:picasso:2.71828")
-//    implementation(fileTree(mapOf("dir" to "/Users/tranthihongphuc/Documents/ZaloPayLib",
-//            "include" to listOf("*.aar", "*.jar"), "exclude" to listOf(""))))
+    implementation(fileTree(mapOf("dir" to "/Users/tranthihongphuc/Documents/ZaloPayLib",
+            "include" to listOf("*.aar", "*.jar"), "exclude" to listOf(""))))
 //    implementation(fileTree(mapOf(
 //        "dir" to "C:\\Users\\overw\\Desktop\\ZaloPayLib",
 //        "include" to listOf("*.aar", "*.jar"),
