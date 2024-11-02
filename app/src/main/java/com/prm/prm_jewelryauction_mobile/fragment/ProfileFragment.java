@@ -20,12 +20,23 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import com.prm.prm_jewelryauction_mobile.activity.auction.WinAuctionListActivity;  // Import your Order List activity
 import com.prm.prm_jewelryauction_mobile.R;
+import com.prm.prm_jewelryauction_mobile.activity.jewelry.AddJewelryActivity;
 import com.prm.prm_jewelryauction_mobile.activity.product_management.ProductManagementActivity;
 import com.prm.prm_jewelryauction_mobile.activity.payment.PaymentActivity;
 import com.prm.prm_jewelryauction_mobile.activity.auth.LoginActivity;
+import com.prm.prm_jewelryauction_mobile.config.RetrofitClient;
+import com.prm.prm_jewelryauction_mobile.model.ProfileModel;
+import com.prm.prm_jewelryauction_mobile.model.ProfileResponse;
+import com.prm.prm_jewelryauction_mobile.model.UserModel;
+import com.prm.prm_jewelryauction_mobile.service.ApiProduct;
+import com.prm.prm_jewelryauction_mobile.service.ApiProfile;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProfileFragment extends Fragment {
-
+    TextView walletBalance, userName;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -36,11 +47,12 @@ public class ProfileFragment extends Fragment {
 
         // Find the icon container where icons will be dynamically added
         LinearLayout iconContainer = view.findViewById(R.id.icon_container);
-        TextView walletBalance = view.findViewById(R.id.wallet_balance);
+        walletBalance = view.findViewById(R.id.wallet_balance);
+        userName = view.findViewById(R.id.user_name);
         Button btnDeposit = view.findViewById(R.id.button_deposit);
-
+        getProfileInfor();
         // Set wallet balance (example value)
-        walletBalance.setText("20,000,000");
+
 
         // Handle deposit button click
         btnDeposit.setOnClickListener(v -> {
@@ -61,13 +73,13 @@ public class ProfileFragment extends Fragment {
             Intent intent = new Intent(getActivity(), WinAuctionListActivity.class);
             startActivity(intent);
         });
-        addIconWithName(iconContainer, R.drawable.ic_add, "Add Product", () -> navigateToFragment(new AddJewelryFragment()));
+        addIconWithName(iconContainer, R.drawable.ic_add, "Add Product", () -> {
+            Intent intent = new Intent(getActivity(), AddJewelryActivity.class);
+            startActivity(intent);
+        });
         addIconWithName(iconContainer, R.drawable.ic_logout, "Logout", this::logout);
-
         return view;
     }
-
-    // Helper method to dynamically add icons with names
     private void addIconWithName(LinearLayout parent, int iconResId, String name, Runnable onClickAction) {
         // Create a vertical layout to hold the icon and name
         LinearLayout itemLayout = new LinearLayout(getContext());
@@ -96,7 +108,6 @@ public class ProfileFragment extends Fragment {
         iconName.setGravity(Gravity.CENTER);
         iconName.setTextColor(Color.BLACK);
         iconName.setTextSize(14);
-
         // Add the icon and name to the item layout
         itemLayout.addView(icon);
         itemLayout.addView(iconName);
@@ -129,4 +140,35 @@ public class ProfileFragment extends Fragment {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
+
+    private void getProfileInfor() {
+        ApiProfile apiProfile = RetrofitClient.getRetrofitInstanceWithToken(requireContext()).create(ApiProfile.class);
+        Call<ProfileResponse> call = apiProfile.getUser();
+        call.enqueue(new Callback<ProfileResponse>() {
+            @Override
+            public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ProfileModel profile = response.body().getData();
+                    System.out.println(response.body().toString());
+                    // Set the response body to userInformation
+                    walletBalance.setText(String.format("%,.2f", profile.getMoney()));
+                    if (profile.getUser() != null) {
+                        userName.setText(profile.getUser().getFull_name());
+                    } else {
+                        // Handle the case where `UserModel` is null
+                        userName.setText("User name not available");
+                        System.out.println("Error: User information is null in the response");
+                    }
+                } else {
+                    // Handle the case where the response was not successful
+                    System.out.println("Error: " + response.message());
+                }            }
+
+            @Override
+            public void onFailure(Call<ProfileResponse> call, Throwable t) {
+                System.out.println("Error: ");
+            }
+        });
+    }
 }
+

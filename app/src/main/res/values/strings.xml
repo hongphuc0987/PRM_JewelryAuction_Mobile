@@ -5,4 +5,10 @@
     <!-- Thêm các chuỗi khác nếu cần -->
 
     <string name="auction_thumbnail">Auction Thumbnail</string>
+    <string-array name="valuation_methods">
+        <item>AT_HOME_VALUATION</item>
+        <item>DIRECTLY_VALUATION</item>
+    </string-array>
 </resources>
+
+

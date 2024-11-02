@@ -33,7 +33,7 @@
             android:id="@+id/txtUploadImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Upload Image"
+            android:text="Upload Thumbnail"
             android:textSize="16dp"
             android:textStyle="bold"
             android:layout_below="@id/etJewelryDescription"
@@ -56,8 +56,63 @@
             android:text="Choose Image"
             android:layout_below="@id/imgPreview"
             android:layout_marginTop="10dp"
-            android:layout_alignParentEnd="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"/>
+
+        <TextView
+            android:id="@+id/txtUploadImages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upload Images"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_below="@id/btnUploadImage"
+            android:layout_marginTop="20dp"/>
+
+        <LinearLayout
+        android:id="@+id/llImageContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/txtUploadImages"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:id="@+id/imgPreview1"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:scaleType="centerCrop"
+            android:background="@android:color/darker_gray"
+            android:contentDescription="Image Preview 1"/>
+
+        <ImageView
+            android:id="@+id/imgPreview2"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:scaleType="centerCrop"
+            android:background="@android:color/darker_gray"
+            android:contentDescription="Image Preview 2"/>
+
+        <ImageView
+            android:id="@+id/imgPreview3"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:scaleType="centerCrop"
+            android:background="@android:color/darker_gray"
+            android:contentDescription="Image Preview 3"/>
+    </LinearLayout>
+
+        <Button
+            android:id="@+id/btnChooseImages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose Images"
+            android:layout_below="@id/llImageContainer"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"/>
 
         <!-- Category Spinner -->
         <TextView
@@ -67,7 +122,7 @@
             android:text="Category"
             android:textSize="16dp"
             android:textStyle="bold"
-            android:layout_below="@id/btnUploadImage"/>
+            android:layout_below="@id/btnChooseImages"/>
 
         <Spinner
             android:id="@+id/spinnerCategory"
@@ -143,6 +198,7 @@
             android:minHeight="48dp"
             android:gravity="center_vertical"/>
 
+
         <!-- Size Input -->
         <EditText
             android:id="@+id/etSize"
@@ -152,6 +208,16 @@
             android:layout_below="@id/spinnerCondition"
             android:layout_marginBottom="10dp"/>
 
+        <EditText
+            android:id="@+id/etColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Color"
+            android:layout_below="@id/etSize"
+            android:layout_marginBottom="10dp"/>
+
+
+
         <!-- Sex Spinner -->
         <TextView
             android:id="@+id/txtSex"
@@ -160,7 +226,7 @@
             android:text="Sex"
             android:textSize="16dp"
             android:textStyle="bold"
-            android:layout_below="@id/etSize"/>
+            android:layout_below="@id/etColor"/>
 
         <Spinner
             android:id="@+id/rgSex"

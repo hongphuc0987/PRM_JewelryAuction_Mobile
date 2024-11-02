@@ -11,6 +11,10 @@ public class BaseModel {
         this.updatedAt = updatedAt;
     }
 
+    public BaseModel() {
+
+    }
+
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }

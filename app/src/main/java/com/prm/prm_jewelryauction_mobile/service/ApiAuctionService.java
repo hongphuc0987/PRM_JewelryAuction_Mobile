@@ -1,6 +1,7 @@
 package com.prm.prm_jewelryauction_mobile.service;
 
 import com.prm.prm_jewelryauction_mobile.data.request.auction.BiddingRequest;
+import com.prm.prm_jewelryauction_mobile.data.request.auction.CreateAuctionRequest;
 import com.prm.prm_jewelryauction_mobile.model.AuctionModel;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface ApiAuctionService {
 
     @POST("/api/v1/bidding")
     Call<ResponseBody> bidding(@Body BiddingRequest request);
+    @POST("/api/v1/auction")
+    Call<Void> createAuction(@Body CreateAuctionRequest request);
 }
