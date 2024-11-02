@@ -68,12 +68,19 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<List<AuctionModel>> call, Response<List<AuctionModel>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    auctionList = response.body(); // Store the full list
-                    filteredList = new ArrayList<>(auctionList); // Initialize the filtered list
+                    auctionList = new ArrayList<>();
+                    for (AuctionModel auction : response.body()) {
+                        if ("Waiting".equals(auction.getStatus()) || "InProgress".equals(auction.getStatus())) {
+                            auctionList.add(auction);
+                        }
+                    }
+
+                    filteredList = new ArrayList<>(auctionList);
                     cardAdapter = new CardAdapter(requireActivity(), filteredList);
                     recyclerView.setAdapter(cardAdapter);
                 }
             }
+
 
             @Override
             public void onFailure(Call<List<AuctionModel>> call, Throwable t) {

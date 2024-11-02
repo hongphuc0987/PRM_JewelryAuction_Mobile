@@ -15,8 +15,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.prm.prm_jewelryauction_mobile.R;
 import com.prm.prm_jewelryauction_mobile.model.AuctionModel;
+import com.prm.prm_jewelryauction_mobile.model.ProfileResponse;
 import com.prm.prm_jewelryauction_mobile.service.ApiAuctionService;
 import com.prm.prm_jewelryauction_mobile.config.RetrofitClient;
+import com.prm.prm_jewelryauction_mobile.service.ApiProfile;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -79,6 +81,7 @@ public class AuctionDetailActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     AuctionModel auction = response.body();
                     displayAuctionDetails(auction);
+                    checkIfUserIsSeller(auction.getJewelry().getSellerId().getId());
                 }
             }
 
@@ -155,4 +158,27 @@ public class AuctionDetailActivity extends AppCompatActivity {
             }
         }
     }
+    private void checkIfUserIsSeller(long sellerId) {
+        ApiProfile apiProfileService = RetrofitClient.getRetrofitInstanceWithToken(this).create(ApiProfile.class);
+        Call<ProfileResponse> call = apiProfileService.getUser();
+
+        call.enqueue(new Callback<ProfileResponse>() {
+            @Override
+            public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ProfileResponse currentUser = response.body();
+                    if (currentUser.getData().getUser().getId() == sellerId) {
+                        btnAuction.setEnabled(false);
+                        btnAuction.setText("You own this auction.");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProfileResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
 }
