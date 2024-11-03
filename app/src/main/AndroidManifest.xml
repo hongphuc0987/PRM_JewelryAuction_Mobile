@@ -58,6 +58,10 @@
         <activity android:name=".activity.OrderDetailsActivity"/>
         <activity android:name=".activity.jewelry.AddJewelryActivity" />
         <activity android:name=".activity.product_management.DetailValuating" />
+        <activity android:name=".activity.auction.BiddingHistoryActivity" />
+        <activity android:name=".activity.wishlist.WishListActivity" />
+
+
 
     </application>
     <uses-permission android:name="android.permission.INTERNET" />

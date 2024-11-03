@@ -5,13 +5,33 @@
     android:fillViewport="true"
     android:padding="16dp">
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:drawableLeft="@android:drawable/ic_media_previous"
+            android:background="@android:color/transparent"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnBack"
+            android:text="Add new jewelry"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
 
         <!-- Jewelry Name -->
         <EditText
             android:id="@+id/etJewelryName"
+            android:layout_below="@id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter Jewelry Name"
