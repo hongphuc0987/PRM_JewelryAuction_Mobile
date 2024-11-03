@@ -24,6 +24,7 @@ import com.prm.prm_jewelryauction_mobile.activity.jewelry.AddJewelryActivity;
 import com.prm.prm_jewelryauction_mobile.activity.product_management.ProductManagementActivity;
 import com.prm.prm_jewelryauction_mobile.activity.payment.PaymentActivity;
 import com.prm.prm_jewelryauction_mobile.activity.auth.LoginActivity;
+import com.prm.prm_jewelryauction_mobile.activity.wishlist.WishListActivity;
 import com.prm.prm_jewelryauction_mobile.config.RetrofitClient;
 import com.prm.prm_jewelryauction_mobile.model.ProfileModel;
 import com.prm.prm_jewelryauction_mobile.model.ProfileResponse;
@@ -61,8 +62,8 @@ public class ProfileFragment extends Fragment {
         });
 
         // Add icons with names dynamically
-        addIconWithName(iconContainer, R.drawable.ic_account, "Profile",
-                () -> navigateToFragment(new HomeFragment()));
+//        addIconWithName(iconContainer, R.drawable.ic_account, "Profile",
+//                () -> navigateToFragment(new HomeFragment()));
 
         // Start ProductManagementActivity when the icon is clicked
         addIconWithName(iconContainer, R.drawable.ic_management, "Product", () -> {
@@ -75,6 +76,10 @@ public class ProfileFragment extends Fragment {
         });
         addIconWithName(iconContainer, R.drawable.ic_add, "Add Product", () -> {
             Intent intent = new Intent(getActivity(), AddJewelryActivity.class);
+            startActivity(intent);
+        });
+        addIconWithName(iconContainer, R.drawable.ic_wishlist, "Wish List", () -> {
+            Intent intent = new Intent(getActivity(), WishListActivity.class);
             startActivity(intent);
         });
         addIconWithName(iconContainer, R.drawable.ic_logout, "Logout", this::logout);

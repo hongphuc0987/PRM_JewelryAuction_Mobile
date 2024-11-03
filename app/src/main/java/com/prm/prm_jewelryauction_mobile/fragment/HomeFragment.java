@@ -30,8 +30,8 @@ import androidx.appcompat.widget.SearchView;
 public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private CardAdapter cardAdapter;
-    private List<AuctionModel> auctionList; // Store the full list of auctions
-    private List<AuctionModel> filteredList; // Store the filtered list
+    private List<AuctionModel> auctionList;
+    private List<AuctionModel> filteredList;
 
     @Nullable
     @Override
@@ -91,9 +91,9 @@ public class HomeFragment extends Fragment {
     }
 
     private void filter(String query) {
-        filteredList.clear(); // Clear the current filtered list
+        filteredList.clear();
         if (query.isEmpty()) {
-            filteredList.addAll(auctionList); // If query is empty, add all items
+            filteredList.addAll(auctionList);
         } else {
             for (AuctionModel auction : auctionList) {
                 if (auction.getJewelry().getName().toLowerCase().contains(query.toLowerCase())) { // Assuming you have a getProductName() method
@@ -101,6 +101,6 @@ public class HomeFragment extends Fragment {
                 }
             }
         }
-        cardAdapter.notifyDataSetChanged(); // Notify the adapter of data changes
+        cardAdapter.notifyDataSetChanged();
     }
 }

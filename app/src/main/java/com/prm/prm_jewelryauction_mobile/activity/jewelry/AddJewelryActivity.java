@@ -69,7 +69,7 @@ public class AddJewelryActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_PERMISSIONS = 100;
     private EditText etJewelryName, etJewelryDescription, etSize, etColor;
     private Spinner spinnerCategory, spinnerCollection, spinnerBrand, spinnerCondition, spinnerSex;
-    private Button btnUploadImage, btnSubmit, btnChooseImages;
+    private Button btnUploadImage, btnSubmit, btnChooseImages, btnBack;
     private ImageView imgPreview, btnAddMaterial, imgPreview1, imgPreview2, imgPreview3;
     private List<CategoryModel> categoryList;
     private List<BrandModel> brandList;
@@ -108,6 +108,7 @@ public class AddJewelryActivity extends AppCompatActivity {
         imgPreview2 = findViewById(R.id.imgPreview2);
         imgPreview3 = findViewById(R.id.imgPreview3);
         rvMaterials = findViewById(R.id.rvMaterials);
+        btnBack = findViewById(R.id.btnBack);
 
         loadCategories();
         loadBrands();
@@ -117,6 +118,7 @@ public class AddJewelryActivity extends AppCompatActivity {
         selectedMaterials = new ArrayList<>();
         loadMaterials();
         setupRecyclerView();
+        btnBack.setOnClickListener(v -> onBackPressed());
         btnUploadImage.setOnClickListener(v -> {
             if (checkStoragePermission()) {
                 openImagePicker();
