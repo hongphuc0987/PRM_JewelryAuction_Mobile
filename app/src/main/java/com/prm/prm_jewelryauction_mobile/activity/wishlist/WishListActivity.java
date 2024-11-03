@@ -3,6 +3,7 @@ package com.prm.prm_jewelryauction_mobile.activity.wishlist;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +25,8 @@ public class WishListActivity extends AppCompatActivity {
     private WishListAdapter adapter;
     private ProgressBar progressBar;
 
+    private Button btnBack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +34,10 @@ public class WishListActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerViewWishList);
         progressBar = findViewById(R.id.progressBar);
+        btnBack = findViewById(R.id.btnBack);
+
+        btnBack.setOnClickListener(v -> onBackPressed());
+
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         fetchWishList();

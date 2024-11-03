@@ -1,5 +1,6 @@
 package com.prm.prm_jewelryauction_mobile.adapter.AuctionAdapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.prm.prm_jewelryauction_mobile.R;
+import com.prm.prm_jewelryauction_mobile.activity.auction.AuctionDetailActivity;
 import com.prm.prm_jewelryauction_mobile.data.response.Wishlist;
 import com.prm.prm_jewelryauction_mobile.model.AuctionModel;
 
@@ -44,6 +46,15 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.ViewHo
                     .load(baseUrl + auction.getJewelry().getThumbnail())
                     .into(holder.ivThumbnail);
         }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), AuctionDetailActivity.class);
+                intent.putExtra("AUCTION_ID", auction.getId());
+                v.getContext().startActivity(intent);
+            }
+        });
+
     }
 
     @Override
