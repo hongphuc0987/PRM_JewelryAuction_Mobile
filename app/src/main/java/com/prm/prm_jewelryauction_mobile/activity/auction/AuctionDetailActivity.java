@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,11 +15,16 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.prm.prm_jewelryauction_mobile.R;
+import com.prm.prm_jewelryauction_mobile.data.response.WishListRespone;
+import com.prm.prm_jewelryauction_mobile.data.response.Wishlist;
 import com.prm.prm_jewelryauction_mobile.model.AuctionModel;
 import com.prm.prm_jewelryauction_mobile.model.ProfileResponse;
 import com.prm.prm_jewelryauction_mobile.service.ApiAuctionService;
 import com.prm.prm_jewelryauction_mobile.config.RetrofitClient;
 import com.prm.prm_jewelryauction_mobile.service.ApiProfile;
+import com.prm.prm_jewelryauction_mobile.service.ApiWishListService;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,7 +35,7 @@ public class AuctionDetailActivity extends AppCompatActivity {
     private TextView tvJewelryName, tvCategoryName, tvMaterials, tvCollectionName,tvJewelryBrand;
     private TextView tvSellerName, tvWinnerName, tvJewelryCondition, tvCurrentPrice, tvStartingPrice, tvStatus;
     private ImageView imgThumbnail, imgJewelry1, imgJewelry2, imgJewelry3;
-    private Button btnAuction, btnBack, btnHistory;
+    private Button btnAuction, btnBack, btnHistory, btnWishList;
 
     String baseUrl = "http://35.194.232.209:9090/uploads/jewelry/";
 
@@ -57,6 +63,7 @@ public class AuctionDetailActivity extends AppCompatActivity {
         btnAuction = findViewById(R.id.btnAuction);
         btnBack = findViewById(R.id.btnBack);
         btnHistory = findViewById(R.id.btnHistoryBidding);
+        btnWishList = findViewById(R.id.btnAddToWishlist);
 
         long auctionId = getIntent().getLongExtra("AUCTION_ID", -1);
         if (auctionId != -1) {
@@ -75,6 +82,9 @@ public class AuctionDetailActivity extends AppCompatActivity {
             intent.putExtra("AUCTION_ID", auctionId);
             startActivity(intent);
         });
+        btnWishList.setOnClickListener(v -> {
+            addToWishlist(auctionId);
+        });
     }
 
     private void loadAuctionDetails(long auctionId) {
@@ -88,6 +98,7 @@ public class AuctionDetailActivity extends AppCompatActivity {
                     AuctionModel auction = response.body();
                     displayAuctionDetails(auction);
                     checkIfUserIsSeller(auction.getJewelry().getSellerId().getId());
+                    checkIfInWishlist(auctionId);
                 }
             }
 
@@ -187,6 +198,92 @@ public class AuctionDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ProfileResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private void addToWishlist(long auctionId) {
+        ApiWishListService apiWishListService = RetrofitClient.getRetrofitInstanceWithToken(this).create(ApiWishListService.class);
+
+            Call<Void> call = apiWishListService.addWishList(auctionId);
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                       // Thay đổi nút
+                        Toast.makeText(AuctionDetailActivity.this, "Added to Wishlist!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(AuctionDetailActivity.this, "Failed to add to Wishlist.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    t.printStackTrace();
+                    Toast.makeText(AuctionDetailActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+    }
+
+    private void removeFromWishlist(long wishlistItemId) {
+        ApiWishListService apiWishListService = RetrofitClient.getRetrofitInstanceWithToken(this).create(ApiWishListService.class);
+        Call<Void> call = apiWishListService.deleteWishList(wishlistItemId); // Sử dụng ID của wishlist item
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(AuctionDetailActivity.this, "Removed from Wishlist!", Toast.LENGTH_SHORT).show();
+                    btnWishList.setText("Add to Wishlist");
+                } else {
+                    Toast.makeText(AuctionDetailActivity.this, "Failed to remove from Wishlist.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(AuctionDetailActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    private void checkIfInWishlist(long auctionId) {
+        ApiWishListService apiWishListService = RetrofitClient.getRetrofitInstanceWithToken(this).create(ApiWishListService.class);
+        Call<WishListRespone> call = apiWishListService.getWishList();
+
+        call.enqueue(new Callback<WishListRespone>() {
+            @Override
+            public void onResponse(Call<WishListRespone> call, Response<WishListRespone> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Wishlist> wishlistItems = response.body().getData();
+                    boolean isInWishlist = false;
+                    long wishlistItemId = -1;
+
+                    for (Wishlist item : wishlistItems) {
+                        if (item.getAuction().getId() == auctionId) {
+                            isInWishlist = true;
+                            wishlistItemId = item.getId();
+                            break;
+                        }
+                    }
+
+                    if (isInWishlist) {
+                        btnWishList.setText("Remove from Wishlist");
+                        long finalWishlistItemId = wishlistItemId;
+                        btnWishList.setOnClickListener(v -> removeFromWishlist(finalWishlistItemId));
+                    } else {
+                        btnWishList.setText("Add to Wishlist");
+                        btnWishList.setOnClickListener(v -> addToWishlist(auctionId));
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WishListRespone> call, Throwable t) {
                 t.printStackTrace();
             }
         });
