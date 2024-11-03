@@ -67,7 +67,6 @@ public class WinAuctionListActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null && response.body().getCode() == 200) {
                     // Get auction list from response
                     auctionList = response.body().getData();
-                    Log.d(TAG, response.body().getData().get(0).toString());
                     if (auctionList == null || auctionList.isEmpty()) {
                         // No auction items available, show a message
                         findViewById(R.id.noAuctionTextView).setVisibility(View.VISIBLE);
@@ -80,7 +79,6 @@ public class WinAuctionListActivity extends AppCompatActivity {
                         winAuctionRecyclerView.setVisibility(View.VISIBLE); // Show RecyclerView
 
                         // Log the first auction item for debugging
-                        Log.d(TAG, "First auction item: " + auctionList.get(0).toString());
                     }
                 } else {
                     // Handle unsuccessful response
