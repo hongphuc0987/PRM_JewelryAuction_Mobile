@@ -5,15 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.prm.prm_jewelryauction_mobile.R;
+import com.prm.prm_jewelryauction_mobile.activity.auction.MyAuctionFragment;
 import com.prm.prm_jewelryauction_mobile.fragment.ProductFragment;
 import com.prm.prm_jewelryauction_mobile.fragment.ValuationFragment;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 public class ProductManagementActivity extends AppCompatActivity {
 
@@ -40,7 +37,9 @@ public class ProductManagementActivity extends AppCompatActivity {
                     case 0:
                         return new ProductFragment();
                     case 1:
-                        return new ValuationFragment(); // Trả về fragment cho tab "Sản Phẩm"
+                        return new ValuationFragment();
+                    case 2:
+                        return new MyAuctionFragment();
                     default:
                         return null;
                 }
@@ -48,7 +47,7 @@ public class ProductManagementActivity extends AppCompatActivity {
 
             @Override
             public int getCount() {
-                return 2; // Số lượng các tab
+                return 3;
             }
 
             @Override
@@ -58,6 +57,8 @@ public class ProductManagementActivity extends AppCompatActivity {
                         return "Sản Phẩm";
                     case 1:
                         return "Định giá";
+                    case 2:
+                        return "Đấu giá của tôi";
                     default:
                         return null;
                 }

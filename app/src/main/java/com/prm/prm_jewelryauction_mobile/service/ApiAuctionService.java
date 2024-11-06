@@ -3,6 +3,7 @@ package com.prm.prm_jewelryauction_mobile.service;
 import com.prm.prm_jewelryauction_mobile.data.request.auction.BiddingRequest;
 import com.prm.prm_jewelryauction_mobile.data.request.auction.CreateAuctionRequest;
 import com.prm.prm_jewelryauction_mobile.data.response.BiddingHistoryResponse;
+import com.prm.prm_jewelryauction_mobile.data.response.MyAuctionResponse;
 import com.prm.prm_jewelryauction_mobile.model.AuctionModel;
 
 import java.util.List;
@@ -28,4 +29,8 @@ public interface ApiAuctionService {
 
     @GET("/api/v1/auction/bids/{auctionId}")
     Call<BiddingHistoryResponse> bidhistory(@Path("auctionId") long auctionId);
+
+    @GET("/api/v1/auction/myauction")
+    Call<MyAuctionResponse> myAuction();
+
 }

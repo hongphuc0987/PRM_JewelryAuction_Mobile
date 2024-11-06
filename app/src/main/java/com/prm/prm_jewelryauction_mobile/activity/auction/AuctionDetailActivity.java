@@ -97,8 +97,10 @@ public class AuctionDetailActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     AuctionModel auction = response.body();
                     displayAuctionDetails(auction);
-                    checkIfUserIsSeller(auction.getJewelry().getSellerId().getId());
+//                    checkIfUserIsSeller(auction.getJewelry().getSellerId().getId());
                     checkIfInWishlist(auctionId);
+                    long winnerId = auction.getWinner() != null ? auction.getWinner().getId() : -1;
+                    checkIfUserIsSellerOrWinner(auction.getJewelry().getSellerId().getId(), winnerId);
                 }
             }
 
@@ -125,7 +127,7 @@ public class AuctionDetailActivity extends AppCompatActivity {
 
         tvCollectionName.setText("Collection: " + auction.getJewelry().getCollection().getName());
         tvSellerName.setText("Seller: " + auction.getJewelry().getSellerId().getFullName());
-        tvWinnerName.setText("Winner: " + (auction.getWinner() != null ? auction.getWinner().getFullName() : "No winner yet"));
+        tvWinnerName.setText("Current Winner: " + (auction.getWinner() != null ? auction.getWinner().getFullName() : "No winner yet"));
         tvJewelryCondition.setText("Condition: " + auction.getJewelry().getJewelryCondition());
         tvJewelryBrand.setText("Brand: " + auction.getJewelry().getBrand().getName());
         tvCurrentPrice.setText("Current Price: " + auction.getCurrentPrice() + " VND");
@@ -180,28 +182,28 @@ public class AuctionDetailActivity extends AppCompatActivity {
             }
         }
     }
-    private void checkIfUserIsSeller(long sellerId) {
-        ApiProfile apiProfileService = RetrofitClient.getRetrofitInstanceWithToken(this).create(ApiProfile.class);
-        Call<ProfileResponse> call = apiProfileService.getUser();
-
-        call.enqueue(new Callback<ProfileResponse>() {
-            @Override
-            public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    ProfileResponse currentUser = response.body();
-                    if (currentUser.getData().getUser().getId() == sellerId) {
-                        btnAuction.setEnabled(false);
-                        btnAuction.setText("You own this auction.");
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ProfileResponse> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
-    }
+//    private void checkIfUserIsSeller(long sellerId) {
+//        ApiProfile apiProfileService = RetrofitClient.getRetrofitInstanceWithToken(this).create(ApiProfile.class);
+//        Call<ProfileResponse> call = apiProfileService.getUser();
+//
+//        call.enqueue(new Callback<ProfileResponse>() {
+//            @Override
+//            public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
+//                if (response.isSuccessful() && response.body() != null) {
+//                    ProfileResponse currentUser = response.body();
+//                    if (currentUser.getData().getUser().getId() == sellerId) {
+//                        btnAuction.setEnabled(false);
+//                        btnAuction.setText("You own this auction.");
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ProfileResponse> call, Throwable t) {
+//                t.printStackTrace();
+//            }
+//        });
+//    }
 
     private void addToWishlist(long auctionId) {
         ApiWishListService apiWishListService = RetrofitClient.getRetrofitInstanceWithToken(this).create(ApiWishListService.class);
@@ -284,6 +286,33 @@ public class AuctionDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<WishListRespone> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private void checkIfUserIsSellerOrWinner(long sellerId, long winnerId) {
+        ApiProfile apiProfileService = RetrofitClient.getRetrofitInstanceWithToken(this).create(ApiProfile.class);
+        Call<ProfileResponse> call = apiProfileService.getUser();
+
+        call.enqueue(new Callback<ProfileResponse>() {
+            @Override
+            public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ProfileResponse currentUser = response.body();
+                    long currentUserId = currentUser.getData().getUser().getId();
+
+                    if (currentUserId == sellerId) {
+                        btnAuction.setEnabled(false);
+                        btnAuction.setText("You own this auction.");
+                    } else if (currentUserId == winnerId) {
+                        btnAuction.setText("Auto bid");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProfileResponse> call, Throwable t) {
                 t.printStackTrace();
             }
         });
