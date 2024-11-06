@@ -1,10 +1,13 @@
 package com.prm.prm_jewelryauction_mobile.activity.auth;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +28,7 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText etFullName, etEmail, etPhone, etAddress, etDob, etPassword, etConfirmPassword;
     private Button btnSignUp;
     private int year, month, day;  // Các biến lưu trữ ngày tháng
+    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,7 @@ public class SignUpActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
         btnSignUp = findViewById(R.id.btnSignUp);
+        textView = findViewById(R.id.textView);
 
         // Lấy ngày hiện tại
         Calendar calendar = Calendar.getInstance();
@@ -56,6 +61,14 @@ public class SignUpActivity extends AppCompatActivity {
                         etDob.setText(dob);
                     }, year, month, day);
             datePickerDialog.show();
+        });
+
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
         });
 
         // Sự kiện nhấn vào nút đăng ký

@@ -17,6 +17,6 @@ public interface ApiOrderService {
     Call<ApiResponseWinAuction> getOrderList();
 
     @POST("/api/v1/checkout")
-    Call<ApiResponseWinAuction> checkout(@Body CheckoutRequest request); // Define the checkout method
+    Call<Void> checkout(@Body CheckoutRequest request); // Define the checkout method
 
 }
