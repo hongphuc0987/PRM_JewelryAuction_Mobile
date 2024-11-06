@@ -96,7 +96,7 @@ public class CheckoutActivity extends AppCompatActivity {
             // Call the checkout API
             apiOrderService.checkout(checkoutRequest).enqueue(new Callback<Void>() {
                 @Override
-                public void onResponse(Call<Void> call, Response<Void> response) {
+                public void onResponse(Call<Void> call, Response<1Void> response) {
                     if (response.isSuccessful()) {
                         Toast.makeText(CheckoutActivity.this, "Checkout successful! wait for 2seconds to return", Toast.LENGTH_SHORT).show();
                         // Optionally, navigate to another screen or finish the activity
