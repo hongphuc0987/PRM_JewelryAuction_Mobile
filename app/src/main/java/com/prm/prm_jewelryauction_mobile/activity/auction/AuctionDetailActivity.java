@@ -29,7 +29,7 @@ public class AuctionDetailActivity extends AppCompatActivity {
     private TextView tvJewelryName, tvCategoryName, tvMaterials, tvCollectionName,tvJewelryBrand;
     private TextView tvSellerName, tvWinnerName, tvJewelryCondition, tvCurrentPrice, tvStartingPrice, tvStatus;
     private ImageView imgThumbnail, imgJewelry1, imgJewelry2, imgJewelry3;
-    private Button btnAuction, btnBack;
+    private Button btnAuction, btnBack, btnHistory;
 
     String baseUrl = "http://35.194.232.209:9090/uploads/jewelry/";
 
@@ -56,6 +56,7 @@ public class AuctionDetailActivity extends AppCompatActivity {
         imgJewelry3 = findViewById(R.id.imgJewelry3);
         btnAuction = findViewById(R.id.btnAuction);
         btnBack = findViewById(R.id.btnBack);
+        btnHistory = findViewById(R.id.btnHistoryBidding);
 
         long auctionId = getIntent().getLongExtra("AUCTION_ID", -1);
         if (auctionId != -1) {
@@ -66,6 +67,11 @@ public class AuctionDetailActivity extends AppCompatActivity {
 
         btnAuction.setOnClickListener(v -> {
             Intent intent = new Intent(AuctionDetailActivity.this, BiddingActivity.class);
+            intent.putExtra("AUCTION_ID", auctionId);
+            startActivity(intent);
+        });
+        btnHistory.setOnClickListener(v -> {
+            Intent intent = new Intent(AuctionDetailActivity.this, BiddingHistoryActivity.class);
             intent.putExtra("AUCTION_ID", auctionId);
             startActivity(intent);
         });
@@ -114,6 +120,11 @@ public class AuctionDetailActivity extends AppCompatActivity {
         tvCurrentPrice.setText("Current Price: " + auction.getCurrentPrice() + " VND");
         tvStartingPrice.setText("Starting Price: " + auction.getJewelry().getStaringPrice() + " VND");
         tvStatus.setText("Status: " + auction.getStatus());
+
+        if ("Waiting".equalsIgnoreCase(auction.getStatus())) {
+            btnAuction.setEnabled(false);
+            btnAuction.setText("Auction has not started yet");
+        }
 
         Glide.with(this)
                 .load(baseUrl + auction.getJewelry().getThumbnail())
