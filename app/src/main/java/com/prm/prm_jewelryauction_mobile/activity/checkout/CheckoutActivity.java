@@ -1,7 +1,9 @@
 package com.prm.prm_jewelryauction_mobile.activity.checkout;
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -14,7 +16,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.prm.prm_jewelryauction_mobile.MainActivity;
 import com.prm.prm_jewelryauction_mobile.R;
+import com.prm.prm_jewelryauction_mobile.activity.auction.WinAuctionListActivity;
+import com.prm.prm_jewelryauction_mobile.fragment.HomeFragment;
 import com.prm.prm_jewelryauction_mobile.model.ApiResponseWinAuction;
 import com.prm.prm_jewelryauction_mobile.model.CheckoutRequest;
 import com.prm.prm_jewelryauction_mobile.service.impl.ApiOrderServiceImpl;
@@ -30,6 +35,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private EditText fullNameInput, phoneNumberInput, addressInput;
     private Button checkoutButton;
     private ApiOrderServiceImpl apiOrderService;
+    private static final String TAG = "CheckoutActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,22 +94,22 @@ public class CheckoutActivity extends AppCompatActivity {
             CheckoutRequest checkoutRequest = new CheckoutRequest(auctionId, fullName, phoneNumber, address);
 
             // Call the checkout API
-            apiOrderService.checkout(checkoutRequest).enqueue(new Callback<ApiResponseWinAuction>() {
+            apiOrderService.checkout(checkoutRequest).enqueue(new Callback<Void>() {
                 @Override
-                public void onResponse(Call<ApiResponseWinAuction> call, Response<ApiResponseWinAuction> response) {
-                    Log.d(TAG, call.request().url().toString());
-                    Log.d(TAG, response.body().toString());
-                    if (response.isSuccessful() && response.body().getCode() == 200) {
-                        Toast.makeText(CheckoutActivity.this, "Checkout successful!", Toast.LENGTH_SHORT).show();
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(CheckoutActivity.this, "Checkout successful! wait for 2seconds to return", Toast.LENGTH_SHORT).show();
                         // Optionally, navigate to another screen or finish the activity
+                        new Handler().postDelayed(() -> {
+                            finish();  // Optional: finish the current activity
+                        }, 2000);
                     } else {
-                        Toast.makeText(CheckoutActivity.this, "Checkout failed: " + response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CheckoutActivity.this, "Checkout failed", Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
-                public void onFailure(Call<ApiResponseWinAuction> call, Throwable t) {
-                    Log.d(TAG, call.request().toString());
+                public void onFailure(Call<Void> call, Throwable t) {
                     Toast.makeText(CheckoutActivity.this, "An error occurred: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });

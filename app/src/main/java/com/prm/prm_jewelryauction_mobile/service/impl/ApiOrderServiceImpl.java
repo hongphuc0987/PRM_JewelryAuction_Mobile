@@ -30,7 +30,7 @@ public class ApiOrderServiceImpl implements ApiOrderService {
     }
 
     @Override
-    public Call<ApiResponseWinAuction> checkout(CheckoutRequest request) {
+    public Call<Void> checkout(CheckoutRequest request) {
         return apiOrderService.checkout(request);
     }
 
