@@ -2,6 +2,7 @@ package com.prm.prm_jewelryauction_mobile.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -16,6 +17,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
     private TextView jewelryName, winningPrice, auctionDate, winnerName, sellerName, auctionStatus;
     private ImageView jewelryImage;  // ImageView for displaying the jewelry image
+    private static final String TAG = "OrderDetailsActivity";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         String sellerNameValue = getIntent().getStringExtra("sellerName");
         String status = getIntent().getStringExtra("status");
         String jewelryImageValue = getIntent().getStringExtra("jewelryImage");
+        Log.d(TAG, "Auction ID" + auctionId);
 
         // Set values to the views
         if (jewelryNameValue != null) {
