@@ -15,8 +15,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.prm.prm_jewelryauction_mobile.R;
 import com.prm.prm_jewelryauction_mobile.model.AuctionModel;
+import com.prm.prm_jewelryauction_mobile.model.ProfileResponse;
 import com.prm.prm_jewelryauction_mobile.service.ApiAuctionService;
 import com.prm.prm_jewelryauction_mobile.config.RetrofitClient;
+import com.prm.prm_jewelryauction_mobile.service.ApiProfile;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,9 +29,9 @@ public class AuctionDetailActivity extends AppCompatActivity {
     private TextView tvJewelryName, tvCategoryName, tvMaterials, tvCollectionName,tvJewelryBrand;
     private TextView tvSellerName, tvWinnerName, tvJewelryCondition, tvCurrentPrice, tvStartingPrice, tvStatus;
     private ImageView imgThumbnail, imgJewelry1, imgJewelry2, imgJewelry3;
-    private Button btnAuction, btnBack;
+    private Button btnAuction, btnBack, btnHistory;
 
-    String baseUrl = "http://10.0.2.2:8080/images/users/";
+    String baseUrl = "http://35.194.232.209:9090/uploads/jewelry/";
 
 
     @Override
@@ -54,21 +56,25 @@ public class AuctionDetailActivity extends AppCompatActivity {
         imgJewelry3 = findViewById(R.id.imgJewelry3);
         btnAuction = findViewById(R.id.btnAuction);
         btnBack = findViewById(R.id.btnBack);
+        btnHistory = findViewById(R.id.btnHistoryBidding);
 
         long auctionId = getIntent().getLongExtra("AUCTION_ID", -1);
         if (auctionId != -1) {
             loadAuctionDetails(auctionId);
         }
 
-        // Sự kiện nút quay lại
         btnBack.setOnClickListener(v -> onBackPressed());
 
-        // Sự kiện nút đấu giá
-//        btnAuction.setOnClickListener(v -> {
-//            Intent intent = new Intent(AuctionDetailActivity.this, AuctionBidActivity.class);
-//            intent.putExtra("AUCTION_ID", auctionId);
-//            startActivity(intent);
-//        });
+        btnAuction.setOnClickListener(v -> {
+            Intent intent = new Intent(AuctionDetailActivity.this, BiddingActivity.class);
+            intent.putExtra("AUCTION_ID", auctionId);
+            startActivity(intent);
+        });
+        btnHistory.setOnClickListener(v -> {
+            Intent intent = new Intent(AuctionDetailActivity.this, BiddingHistoryActivity.class);
+            intent.putExtra("AUCTION_ID", auctionId);
+            startActivity(intent);
+        });
     }
 
     private void loadAuctionDetails(long auctionId) {
@@ -81,6 +87,7 @@ public class AuctionDetailActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     AuctionModel auction = response.body();
                     displayAuctionDetails(auction);
+                    checkIfUserIsSeller(auction.getJewelry().getSellerId().getId());
                 }
             }
 
@@ -113,6 +120,11 @@ public class AuctionDetailActivity extends AppCompatActivity {
         tvCurrentPrice.setText("Current Price: " + auction.getCurrentPrice() + " VND");
         tvStartingPrice.setText("Starting Price: " + auction.getJewelry().getStaringPrice() + " VND");
         tvStatus.setText("Status: " + auction.getStatus());
+
+        if ("Waiting".equalsIgnoreCase(auction.getStatus())) {
+            btnAuction.setEnabled(false);
+            btnAuction.setText("Auction has not started yet");
+        }
 
         Glide.with(this)
                 .load(baseUrl + auction.getJewelry().getThumbnail())
@@ -157,4 +169,27 @@ public class AuctionDetailActivity extends AppCompatActivity {
             }
         }
     }
+    private void checkIfUserIsSeller(long sellerId) {
+        ApiProfile apiProfileService = RetrofitClient.getRetrofitInstanceWithToken(this).create(ApiProfile.class);
+        Call<ProfileResponse> call = apiProfileService.getUser();
+
+        call.enqueue(new Callback<ProfileResponse>() {
+            @Override
+            public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ProfileResponse currentUser = response.body();
+                    if (currentUser.getData().getUser().getId() == sellerId) {
+                        btnAuction.setEnabled(false);
+                        btnAuction.setText("You own this auction.");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProfileResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
 }

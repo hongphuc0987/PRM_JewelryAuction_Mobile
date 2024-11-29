@@ -1,0 +1,85 @@
+<!-- dialog_edit_product.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/product_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tên sản phẩm" />
+
+    <EditText
+        android:id="@+id/product_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Mô tả sản phẩm" />
+
+    <EditText
+        android:id="@+id/product_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Màu sắc" />
+
+    <EditText
+        android:id="@+id/product_condition"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tình trạng" />
+
+    <EditText
+        android:id="@+id/product_sex"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Giới tính" />
+
+    <EditText
+        android:id="@+id/product_size"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Kích thước" />
+
+    <EditText
+        android:id="@+id/product_weight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Khối lượng" />
+
+    <EditText
+        android:id="@+id/product_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Giá sản phẩm" />
+
+    <EditText
+        android:id="@+id/product_starting_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Giá khởi điểm" />
+
+    <EditText
+        android:id="@+id/product_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Trạng thái" />
+
+    <EditText
+        android:id="@+id/product_brand_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Brand " />
+
+    <EditText
+        android:id="@+id/product_category_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Category " />
+
+    <EditText
+        android:id="@+id/product_collection_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Collection " />
+</LinearLayout>

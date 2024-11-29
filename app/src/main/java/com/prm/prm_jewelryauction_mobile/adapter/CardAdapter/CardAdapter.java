@@ -42,7 +42,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
         holder.tvCurrentPrice.setText(auction.getCurrentPrice());
         holder.tvStatus.setText(auction.getStatus());
         holder.tvEndTime.setText(auction.getEndTime());
-        String imageUrl = "http://10.0.2.2:8080/images/users/"+auction.getJewelry().getThumbnail();
+        String imageUrl = "http://35.194.232.209:9090/uploads/jewelry/"+auction.getJewelry().getThumbnail();
 
         Glide.with(context)
                 .load(imageUrl)

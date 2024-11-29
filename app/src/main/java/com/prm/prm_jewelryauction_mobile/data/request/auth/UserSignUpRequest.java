@@ -1,4 +1,4 @@
-package com.prm.prm_jewelryauction_mobile.data.request;
+package com.prm.prm_jewelryauction_mobile.data.request.auth;
 
 public class UserSignUpRequest {
     private String fullName;

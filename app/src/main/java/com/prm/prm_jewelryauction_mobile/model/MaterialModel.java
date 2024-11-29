@@ -7,8 +7,8 @@ public class MaterialModel extends BaseModel{
     private String name;
     private String unit;
 
-    public MaterialModel(String createdAt, String updatedAt, int id, String name, String unit) {
-        super(createdAt, updatedAt);
+    public MaterialModel( int id, String name, String unit) {
+        super();
         this.id = id;
         this.name = name;
         this.unit = unit;
@@ -24,5 +24,22 @@ public class MaterialModel extends BaseModel{
 
     public String getUnit() {
         return unit;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

@@ -19,14 +19,19 @@ import com.prm.prm_jewelryauction_mobile.config.RetrofitClient;
 import com.prm.prm_jewelryauction_mobile.model.AuctionModel;
 import com.prm.prm_jewelryauction_mobile.service.ApiAuctionService;
 
+import java.util.ArrayList;
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import androidx.appcompat.widget.SearchView;
 
 public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private CardAdapter cardAdapter;
+    private List<AuctionModel> auctionList;
+    private List<AuctionModel> filteredList;
 
     @Nullable
     @Override
@@ -35,6 +40,20 @@ public class HomeFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+
+        SearchView searchView = view.findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return true;
+            }
+        });
 
         fetchAuctions();
 
@@ -49,18 +68,39 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<List<AuctionModel>> call, Response<List<AuctionModel>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<AuctionModel> auctionList = response.body();
-                    System.out.println(response);
-                    cardAdapter = new CardAdapter(requireActivity(), auctionList);
+                    auctionList = new ArrayList<>();
+                    for (AuctionModel auction : response.body()) {
+                        if ("Waiting".equals(auction.getStatus()) || "InProgress".equals(auction.getStatus())) {
+                            auctionList.add(auction);
+                        }
+                    }
+
+                    filteredList = new ArrayList<>(auctionList);
+                    cardAdapter = new CardAdapter(requireActivity(), filteredList);
                     recyclerView.setAdapter(cardAdapter);
                 }
             }
 
+
             @Override
             public void onFailure(Call<List<AuctionModel>> call, Throwable t) {
-                Log.e("API_ERROR", "Lỗi gọi API: " + t.getMessage());
-                Toast.makeText(getActivity(), "Lỗi kết nối!", Toast.LENGTH_SHORT).show();
+                Log.e("API_ERROR", "Error calling API: " + t.getMessage());
+                Toast.makeText(getActivity(), "Connection error!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void filter(String query) {
+        filteredList.clear();
+        if (query.isEmpty()) {
+            filteredList.addAll(auctionList);
+        } else {
+            for (AuctionModel auction : auctionList) {
+                if (auction.getJewelry().getName().toLowerCase().contains(query.toLowerCase())) { // Assuming you have a getProductName() method
+                    filteredList.add(auction);
+                }
+            }
+        }
+        cardAdapter.notifyDataSetChanged();
     }
 }
